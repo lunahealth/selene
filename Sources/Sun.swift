@@ -1,7 +1,9 @@
 import Foundation
 
 struct Sun {
-    private let coords: Coords
+    static let DistanceKm = 149598000.0
+    
+    let coords: Coords
     private let meanAnomaly: Double
     private let equationOfCenter: Double
     private let eclipticalLongitude: Double
