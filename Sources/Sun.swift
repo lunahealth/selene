@@ -12,6 +12,6 @@ struct Sun {
                             + Earth.Center2 * sin(2 * meanAnomaly)
                             + Earth.Center3 * sin(3 * meanAnomaly)).toRadians
         eclipticalLongitude = meanAnomaly + equationOfCenter + Earth.Perihelion + .pi
-        coords = .init(latitude: 0, longitude: eclipticalLongitude)
+        coords = .init(latitude: 0, longitude: eclipticalLongitude).equatorial
     }
 }

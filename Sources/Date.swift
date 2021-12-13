@@ -1,8 +1,8 @@
 import Foundation
 
-private let J1970 = Double(2440588)
-private let J2000 = Double(2451545)
-private let secondsInADay = Double(86400)
+private let J1970 = 2440588.0
+private let J2000 = 2451545.0
+private let secondsInADay = 86400.0
 
 extension Date {
     var julianDay: Double {

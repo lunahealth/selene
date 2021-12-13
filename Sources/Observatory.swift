@@ -1,8 +1,12 @@
 import Foundation
 
 public struct Observatory {
-    func moon(at: Date, on: Coords) async -> Moon {
-        .init(phase: .waxingCrescent, fraction: 0, angle: 0, azimuth: 0, altitude: 0)
+    func moon(at: Date, on: Coords) async -> Moon.Info {
+        let julianDay = at.julianDay
+        let sun = Sun(julianDay: julianDay)
+        let moon = Moon(julianDay: julianDay)
+        
+        return .init(phase: .waxingCrescent, fraction: 0, angle: 0, azimuth: 0, altitude: 0)
     }
 }
 
