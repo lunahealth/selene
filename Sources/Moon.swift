@@ -14,10 +14,10 @@ public struct Moon {
     
     public let phase: Phase
     
-    private let fraction: Double
-    private let angle: Double
-    private let azimuth: Double
-    private let altitude: Double
+//    private let fraction: Double
+//    private let angle: Double
+//    private let azimuth: Double
+//    private let altitude: Double
     
     private let coords: Coords
     private let meanAnomaly: Double
