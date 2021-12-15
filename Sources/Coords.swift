@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Coords {
+public struct Coords: Hashable {
     public let latitude: Double // declination
     public let longitude: Double // right ascencion
     
