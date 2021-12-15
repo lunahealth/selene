@@ -11,9 +11,21 @@ private let Sidereal1 = 360.9856235
 private let Refraction0 = 0.0002967
 private let Refraction1 = 0.00312536
 private let Refraction2 = 0.08901179
+private let Obliquity = 23.4393.toRadians
 
 struct Earth {
-    static let Obliquity = 23.4393.toRadians
+    static func equatorial(coords: Coords) -> Coords {
+        .init(latitude: asin(sin(coords.latitude)
+                             * cos(Obliquity)
+                             + cos(coords.latitude)
+                             * sin(Obliquity)
+                             * sin(coords.longitude)),
+              longitude: atan2(sin(coords.longitude)
+                               * cos(Obliquity)
+                               - tan(coords.latitude)
+                               * sin(Obliquity),
+                               cos(coords.longitude)))
+    }
     
     static func sun(julianDay: Double) -> Coords {
         let meanAnomaly = (Mean0 + Mean1 * julianDay).toRadians
@@ -21,7 +33,7 @@ struct Earth {
                                 + Center2 * sin(2 * meanAnomaly)
                                 + Center3 * sin(3 * meanAnomaly)).toRadians
         let eclipticalLongitude = meanAnomaly + equationOfCenter + Perihelion + .pi
-        return .init(latitude: 0, longitude: eclipticalLongitude).equatorial
+        return equatorial(coords: .init(latitude: 0, longitude: eclipticalLongitude))
     }
     
     static func sidereal(julianDay: Double) -> Double {
