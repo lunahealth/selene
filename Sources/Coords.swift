@@ -8,6 +8,10 @@ public struct Coords {
         .init(latitude: declination, longitude: rightAscension)
     }
     
+    var radians: Self {
+        .init(latitude: latitude.toRadians, longitude: -longitude.toRadians)
+    }
+    
     private var declination: Double {
         asin(sin(latitude) * cos(Earth.Obliquity) + cos(latitude) * sin(Earth.Obliquity) * sin(longitude))
     }

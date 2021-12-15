@@ -1,5 +1,3 @@
-import Foundation
-
 extension Moon {
     public enum Phase {
         case
@@ -12,21 +10,7 @@ extension Moon {
         lastQuarter,
         waningCrescent
         
-        init(moon: Coords, sun: Coords, distanceKm: Double) {
-            let latitude = acos(sin(sun.latitude)
-                                * sin(moon.longitude)
-                                + cos(sun.latitude)
-                                * cos(moon.longitude)
-                                * cos(sun.longitude - moon.latitude))
-            let inclination = atan2(Sun.DistanceKm * sin(latitude), distanceKm - Sun.DistanceKm * cos(latitude))
-            let angle = atan2(cos(sun.latitude)
-                              * sin(sun.longitude - moon.latitude),
-                              sin(sun.latitude)
-                              * cos(moon.longitude)
-                              - cos(sun.latitude)
-                              * sin(moon.longitude)
-                              * cos(sun.longitude - moon.latitude))
-            
+        init(inclination: Double, angle: Double) {
             switch 0.5 + ((0.5 * inclination) * (angle < 0 ? -1 : 1) / .pi) {
             case 0.021 ..< 0.249:
                 self = .waxingCrescent
