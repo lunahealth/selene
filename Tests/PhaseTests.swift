@@ -3,6 +3,6 @@ import XCTest
 
 final class PhaseTests: XCTestCase {
     func testInclinationAndAngle() {
-        XCTAssertEqual(., Moon.Phase(inclination: Double, angle: Double))
+//        XCTAssertEqual(., Moon.Phase(inclination: Double, angle: Double))
     }
 }
