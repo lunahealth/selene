@@ -81,4 +81,26 @@ final class ObservatoryTests: XCTestCase {
         count = await observatory.cache.count
         XCTAssertEqual(2, count)
     }
+    
+    func testFlattenCoordinates() async {
+        let date = Date.now
+        let coords0 = Coords(latitude: 52.483343, longitude: 13.452053)
+        let coords1 = Coords(latitude: 52.489, longitude: 13.45)
+        let coords2 = Coords(latitude: 52.483, longitude: 13.45)
+        let coords3 = Coords(latitude: 52.483999, longitude: 13.452999)
+        let coords4 = Coords(latitude: 52.493343, longitude: 13.452053)
+        
+        _ = await observatory.moon(input: .init(date: date, coords: coords0))
+        _ = await observatory.moon(input: .init(date: date, coords: coords1))
+        _ = await observatory.moon(input: .init(date: date, coords: coords2))
+        _ = await observatory.moon(input: .init(date: date, coords: coords3))
+        
+        var count = await observatory.cache.count
+        XCTAssertEqual(1, count)
+        
+        _ = await observatory.moon(input: .init(date: date, coords: coords4))
+        
+        count = await observatory.cache.count
+        XCTAssertEqual(2, count)
+    }
 }

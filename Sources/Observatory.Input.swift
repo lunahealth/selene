@@ -7,7 +7,7 @@ extension Observatory {
         
         public init(date: Date, coords: Coords) {
             self.date = date.flatten
-            self.coords = coords
+            self.coords = coords.flatten
         }
     }
 }
