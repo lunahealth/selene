@@ -16,7 +16,11 @@ public struct Coords: Hashable {
     }
     
     public init(coordinate: CLLocationCoordinate2D) {
-        latitude = coordinate.latitude
-        longitude = coordinate.longitude
+        self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+    }
+    
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
     }
 }
