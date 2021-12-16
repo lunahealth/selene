@@ -3,6 +3,8 @@ import Foundation
 public final actor Observatory {
     private(set) var cache = [Input : Moon]()
     
+    public init() { }
+    
     public func moon(input: Input) async -> Moon {
         guard let cached = cache[input] else {
             return await Task
