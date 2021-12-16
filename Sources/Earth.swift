@@ -5,13 +5,13 @@ private let Mean1 = 0.98560028
 private let Center1 = 1.9148
 private let Center2 = 0.02
 private let Center3 = 0.0003
-private let Perihelion = 102.9373.toRadians
+private let Perihelion = 102.9372.toRadians
 private let Sidereal0 = 280.16
 private let Sidereal1 = 360.9856235
 private let Refraction0 = 0.0002967
 private let Refraction1 = 0.00312536
 private let Refraction2 = 0.08901179
-private let Obliquity = 23.4393.toRadians
+private let Obliquity = 23.4397.toRadians
 
 struct Earth {
     static func equatorial(coords: Coords) -> Coords {
