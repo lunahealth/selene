@@ -15,16 +15,16 @@ private let Obliquity = 23.4393.toRadians
 
 struct Earth {
     static func equatorial(coords: Coords) -> Coords {
-        .init(latitude: atan2(sin(coords.longitude)
-                              * cos(Obliquity)
-                              - tan(coords.latitude)
-                              * sin(Obliquity),
-                              cos(coords.longitude)),
-              longitude: asin(sin(coords.latitude)
-                              * cos(Obliquity)
-                              + cos(coords.latitude)
-                              * sin(Obliquity)
-                              * sin(coords.longitude)))
+        .init(latitude: asin(sin(coords.latitude)
+                             * cos(Obliquity)
+                             + cos(coords.latitude)
+                             * sin(Obliquity)
+                             * sin(coords.longitude)),
+              longitude: atan2(sin(coords.longitude)
+                               * cos(Obliquity)
+                               - tan(coords.latitude)
+                               * sin(Obliquity),
+                               cos(coords.longitude)))
     }
     
     static func sun(julianDay: Double) -> Coords {

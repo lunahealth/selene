@@ -25,6 +25,7 @@ public struct Moon: Equatable {
         let distanceKm = Km0 - (Km1 * cos(meanAnomaly))
         let coords = Earth.equatorial(coords: .init(latitude: (Latitude0 * sin(meanDistance)).toRadians,
                                                     longitude: (Longitude0 * sin(meanAnomaly)).toRadians + eclipticalLongitude))
+            .inverse
         let latitude = acos(sin(sun.coords.latitude)
                             * sin(coords.longitude)
                             + cos(sun.coords.latitude)

@@ -15,6 +15,10 @@ public struct Coords: Hashable {
         .init(latitude: floor(latitude * flatRate) / flatRate, longitude: floor(longitude * flatRate) / flatRate)
     }
     
+    var inverse: Self {
+        .init(latitude: longitude, longitude: latitude)
+    }
+    
     public init(coordinate: CLLocationCoordinate2D) {
         self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
