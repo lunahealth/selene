@@ -6,6 +6,9 @@ public final actor Observatory {
     public init() { }
     
     public func moon(input: Input) async -> Moon {
+        
+        print(Moonraker().info(input.date.timeIntervalSince1970, input.coords.latitude, input.coords.longitude))
+        
         guard let cached = cache[input] else {
             return await Task
                 .detached(priority: .utility) { [weak self] in
