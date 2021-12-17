@@ -1,5 +1,5 @@
 extension Double {
     var toRadians: Self {
-        .pi / 180 * self
+        self * .pi / 180
     }
 }
