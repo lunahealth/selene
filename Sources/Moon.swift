@@ -10,6 +10,7 @@ private let Latitude0 = 5.128
 private let Longitude0 = 6.289
 private let Km0 = 385001.0
 private let Km1 = 20905.0
+private let EarthToSunKm = 149598000.0
 
 public struct Moon: Equatable {
     public let phase: Phase
@@ -18,27 +19,27 @@ public struct Moon: Equatable {
     private let azimuth: Double
     private let altitude: Double
     
-    init(julianDay: Double, sun: Sun, location: Coords) {
+    init(julianDay: Double, sun: Coords, location: Coords) {
         let meanAnomaly = (Mean0 + Mean1 * julianDay).toRadians
         let meanDistance = (Distance0 + Distance1 * julianDay).toRadians
         let eclipticalLongitude = (EclipticalLongitude0 + EclipticalLongitude1 * julianDay).toRadians
         let distanceKm = Km0 - (Km1 * cos(meanAnomaly))
-        let coords = Earth.equatorial(coords: .init(latitude: (Latitude0 * sin(meanDistance)).toRadians,
-                                                    longitude: (Longitude0 * sin(meanAnomaly)).toRadians + eclipticalLongitude))
-            .inverse
-        let latitude = acos(sin(sun.coords.latitude)
+        let coords = Earth.equatorial(
+            coords: .init(latitude: (Latitude0 * sin(meanDistance)).toRadians,
+                          longitude: (Longitude0 * sin(meanAnomaly)).toRadians + eclipticalLongitude)).inverse
+        let latitude = acos(sin(sun.latitude)
                             * sin(coords.longitude)
-                            + cos(sun.coords.latitude)
+                            + cos(sun.latitude)
                             * cos(coords.longitude)
-                            * cos(sun.coords.longitude - coords.latitude))
-        let inclination = atan2(Sun.DistanceKm * sin(latitude), distanceKm - Sun.DistanceKm * cos(latitude))
-        let apparentAngle = atan2(cos(sun.coords.latitude)
-                                  * sin(sun.coords.longitude - coords.latitude),
-                                  sin(sun.coords.latitude)
+                            * cos(sun.longitude - coords.latitude))
+        let inclination = atan2(EarthToSunKm * sin(latitude), distanceKm - EarthToSunKm * cos(latitude))
+        let apparentAngle = atan2(cos(sun.latitude)
+                                  * sin(sun.longitude - coords.latitude),
+                                  sin(sun.latitude)
                                   * cos(coords.longitude)
-                                  - cos(sun.coords.latitude)
+                                  - cos(sun.latitude)
                                   * sin(coords.longitude)
-                                  * cos(sun.coords.longitude - coords.latitude))
+                                  * cos(sun.longitude - coords.latitude))
         
         let h = Earth.sidereal(julianDay: julianDay) - location.longitude - coords.latitude
         let parallacticAngle = atan2(sin(h),
