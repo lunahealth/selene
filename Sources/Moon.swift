@@ -14,10 +14,10 @@ private let EarthToSunKm = 149598000.0
 
 public struct Moon: Equatable {
     public let phase: Phase
-    private let fraction: Double
-    private let angle: Double
-    private let azimuth: Double
-    private let altitude: Double
+    public let fraction: Double
+    public let angle: Double
+    public let azimuth: Double
+    public let altitude: Double
     
     init(julianDay: Double, sun: Coords, location: Coords) {
         let meanAnomaly = (Mean0 + Mean1 * julianDay).toRadians
