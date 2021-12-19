@@ -19,6 +19,10 @@ public struct Moon: Equatable {
     public let azimuth: Double
     public let altitude: Double
     
+    public var visible: Bool {
+        altitude >= 0 && altitude <= .pi
+    }
+    
     init(julianDay: Double, sun: Coords, location: Coords) {
         let meanAnomaly = (Mean0 + Mean1 * julianDay).toRadians
         let meanDistance = (Distance0 + Distance1 * julianDay).toRadians
@@ -63,11 +67,11 @@ public struct Moon: Equatable {
                         * cos(location.latitude))
     }
     
-    init() {
-        self.phase = .new
-        self.fraction = 0
-        self.angle = 0
-        self.azimuth = 0
-        self.altitude = 0
+    init(phase: Phase = .new, fraction: Double = 0, angle: Double = 0, azimuth: Double = 0, altitude: Double = 0) {
+        self.phase = phase
+        self.fraction = fraction
+        self.angle = angle
+        self.azimuth = azimuth
+        self.altitude = altitude
     }
 }
