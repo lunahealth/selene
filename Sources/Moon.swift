@@ -14,7 +14,7 @@ private let EarthToSunKm = 149598000.0
 
 public struct Moon: Equatable {
     public let phase: Phase
-    public let fraction: Double
+    public let fraction: Int
     public let angle: Double
     public let azimuth: Double
     public let altitude: Double
@@ -52,7 +52,7 @@ public struct Moon: Equatable {
                                      - sin(coords.longitude)
                                      * cos(h))
         phase = .init(inclination: inclination, angle: apparentAngle)
-        fraction =  (1 + cos(inclination)) / 2
+        fraction = .init(round((1 + cos(inclination)) / 2 * 100))
         altitude = Earth.astroRefraction(apparentAltitude: asin(
             sin(location.latitude)
             * sin(coords.longitude)
@@ -67,7 +67,7 @@ public struct Moon: Equatable {
                         * cos(location.latitude))
     }
     
-    init(phase: Phase = .new, fraction: Double = 0, angle: Double = 0, azimuth: Double = 0, altitude: Double = 0) {
+    init(phase: Phase = .new, fraction: Int = 0, angle: Double = 0, azimuth: Double = 0, altitude: Double = 0) {
         self.phase = phase
         self.fraction = fraction
         self.angle = angle
