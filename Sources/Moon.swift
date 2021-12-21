@@ -16,12 +16,6 @@ public struct Moon: Equatable {
     public let phase: Phase
     public let fraction: Int
     public let angle: Double
-    public let azimuth: Double
-    public let altitude: Double
-    
-    public var visible: Bool {
-        altitude >= 0 && altitude <= .pi
-    }
     
     init(julianDay: Double, sun: Coords, location: Coords) {
         let meanAnomaly = (Mean0 + Mean1 * julianDay).toRadians
@@ -53,25 +47,12 @@ public struct Moon: Equatable {
                                      * cos(h))
         phase = .init(inclination: inclination, angle: apparentAngle)
         fraction = .init(round((1 + cos(inclination)) / 2 * 100))
-        altitude = Earth.astroRefraction(apparentAltitude: asin(
-            sin(location.latitude)
-            * sin(coords.longitude)
-            + cos(location.latitude)
-            * cos(coords.longitude)
-            * cos(h)))
         angle = apparentAngle - parallacticAngle
-        azimuth = atan2(sin(h),
-                        cos(h)
-                        * sin(location.latitude)
-                        - tan(coords.longitude)
-                        * cos(location.latitude))
     }
     
-    init(phase: Phase = .new, fraction: Int = 0, angle: Double = 0, azimuth: Double = 0, altitude: Double = 0) {
+    init(phase: Phase = .new, fraction: Int = 0, angle: Double = 0) {
         self.phase = phase
         self.fraction = fraction
         self.angle = angle
-        self.azimuth = azimuth
-        self.altitude = altitude
     }
 }

@@ -4,8 +4,8 @@ import CoreLocation
 private let flatRate = 100.0
 
 public struct Coords: Hashable {
-    public let latitude: Double // declination
-    public let longitude: Double // right ascencion
+    public let latitude: Double
+    public let longitude: Double
     
     var radians: Self {
         .init(latitude: latitude.toRadians, longitude: -longitude.toRadians)
