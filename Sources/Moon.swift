@@ -13,6 +13,7 @@ private let Km1 = 20905.0
 private let EarthToSunKm = 149598000.0
 
 public struct Moon: Equatable {
+    public static let new = Self()
     public let phase: Phase
     public let fraction: Int
     public let angle: Double
