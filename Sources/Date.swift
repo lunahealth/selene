@@ -3,7 +3,7 @@ import Foundation
 private let J1970 = 2440588.0
 private let J2000 = 2451545.0
 private let secondsInADay = 86400.0
-private let flatRate = 5
+private let flatHour = 21
 
 extension Date {
     var julianDay: Double {
@@ -11,8 +11,8 @@ extension Date {
     }
     
     var flatten: Self {
-        var components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
-        components.minute = (components.minute ?? 0) / flatRate * flatRate
+        var components = Calendar.current.dateComponents([.timeZone, .year, .month, .day], from: self)
+        components.hour = flatHour
         return Calendar.current.date(from: components) ?? self
     }
 }

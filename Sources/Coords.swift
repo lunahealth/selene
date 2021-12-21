@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 
-private let flatRate = 100.0
+private let flatRate = 10.0
 
 public struct Coords: Hashable {
     public let latitude: Double

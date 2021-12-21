@@ -31,41 +31,31 @@ final class ObservatoryTests: XCTestCase {
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
-                                                      hour: 0,
-                                                      minute: 0,
-                                                      second: 0))!
+                                                      hour: 0))!
         
         let date1 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
-                                                      hour: 0,
-                                                      minute: 0,
-                                                      second: 30))!
+                                                      hour: 5))!
         
         let date2 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
-                                                      hour: 0,
-                                                      minute: 3,
-                                                      second: 20))!
+                                                      hour: 9))!
         
         let date3 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
-                                                      hour: 0,
-                                                      minute: 4,
-                                                      second: 50))!
+                                                      hour: 16))!
         
         let date4 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
-                                                      day: 0,
-                                                      hour: 0,
-                                                      minute: 5,
-                                                      second: 0))!
+                                                      day: 1,
+                                                      hour: 0))!
         let coords = Coords(latitude: 52.483343, longitude: 13.452053)
         
         _ = await observatory.moon(input: .init(date: date0, coords: coords))
@@ -84,11 +74,11 @@ final class ObservatoryTests: XCTestCase {
     
     func testFlattenCoordinates() async {
         let date = Date.now
-        let coords0 = Coords(latitude: 52.483343, longitude: 13.452053)
-        let coords1 = Coords(latitude: 52.489, longitude: 13.45)
-        let coords2 = Coords(latitude: 52.483, longitude: 13.45)
-        let coords3 = Coords(latitude: 52.483999, longitude: 13.452999)
-        let coords4 = Coords(latitude: 52.493343, longitude: 13.452053)
+        let coords0 = Coords(latitude: 52.48, longitude: 13.45)
+        let coords1 = Coords(latitude: 52.49, longitude: 13.46)
+        let coords2 = Coords(latitude: 52.47, longitude: 13.47)
+        let coords3 = Coords(latitude: 52.46, longitude: 13.49)
+        let coords4 = Coords(latitude: 52.5, longitude: 13.45)
         
         _ = await observatory.moon(input: .init(date: date, coords: coords0))
         _ = await observatory.moon(input: .init(date: date, coords: coords1))
