@@ -5,13 +5,12 @@ private let cycle = 29.53
 private let cycleRadians = .pi2 / cycle
 
 public struct Wheel {
+    public let radians: Double
     public let point: CGPoint
-    let progress: Double
     private let date: Date
     
     public init(date: Date, moon: Moon, correction: Double) {
-        progress = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1)
-        let radians = progress + correction
+        radians = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1) + correction
         point = .init(x: cos(radians), y: sin(radians))
         self.date = date
     }
