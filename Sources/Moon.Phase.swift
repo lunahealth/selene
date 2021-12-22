@@ -11,7 +11,7 @@ extension Moon {
         waningCrescent
         
         init(inclination: Double, angle: Double) {
-            switch 0.5 + ((0.5 * inclination) * (angle < 0 ? -1 : 1) / .pi) {
+            switch 0.5 + (0.5 * inclination * (angle < 0 ? -1 : 1) / .pi) {
             case 0.021 ..< 0.249:
                 self = .waxingCrescent
             case 0.249 ..< 0.253:
