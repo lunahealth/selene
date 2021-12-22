@@ -11,7 +11,8 @@ public struct Wheel {
     
     public init(date: Date, moon: Moon, correction: Double) {
         progress = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1)
-        point = .init(x: cos(progress), y: sin(progress))
+        let radians = progress + correction
+        point = .init(x: cos(radians), y: sin(radians))
         self.date = date
     }
     
