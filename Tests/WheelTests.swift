@@ -3,30 +3,35 @@ import XCTest
 
 final class WheelTests: XCTestCase {
     func testProgress() {
-        var moon = Moon(inclination: .pi, parallacticAngle: 1)
+        var moon = Moon(inclination: .pi, apparentAngle: 1)
         
-        XCTAssertEqual(.new, Moon.Phase(inclination: moon.inclination, angle: moon.parallacticAngle))
+        XCTAssertEqual(.new, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
         XCTAssertEqual(.pi2, Wheel(date: .now, moon: moon).progress)
         
-        moon = .init(inclination: 0, parallacticAngle: 0)
+        moon = .init(inclination: 0, apparentAngle: 0)
         
-        XCTAssertEqual(.full, Moon.Phase(inclination: moon.inclination, angle: moon.parallacticAngle))
+        XCTAssertEqual(.full, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
         XCTAssertEqual(.pi, Wheel(date: .now, moon: moon).progress)
         
-        moon = .init(inclination: .pi_2, parallacticAngle: -1)
+        moon = .init(inclination: .pi_2, apparentAngle: -1)
         
-        XCTAssertEqual(.firstQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.parallacticAngle))
+        XCTAssertEqual(.firstQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
         XCTAssertEqual(.pi_2, Wheel(date: .now, moon: moon).progress)
         
-        moon = .init(inclination: .pi_2, parallacticAngle: 1)
+        moon = .init(inclination: .pi_2, apparentAngle: 1)
         
-        XCTAssertEqual(.lastQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.parallacticAngle))
+        XCTAssertEqual(.lastQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
+        XCTAssertEqual(.pi_2 + .pi, Wheel(date: .now, moon: moon).progress)
+        
+        moon = .init(inclination: .pi_2, apparentAngle: 1)
+        
+        XCTAssertEqual(.lastQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
         XCTAssertEqual(.pi_2 + .pi, Wheel(date: .now, moon: moon).progress)
     }
     
     func testMove() {
         let date = Date()
-        let moon = Moon(inclination: .pi, parallacticAngle: 1)
+        let moon = Moon(inclination: .pi, apparentAngle: 1)
         let wheel = Wheel(date: date, moon: moon)
         
         XCTAssertEqual(date,

@@ -8,7 +8,7 @@ public struct Wheel {
     private let date: Date
     
     public init(date: Date, moon: Moon) {
-        progress = .pi + moon.inclination * (moon.parallacticAngle < 0 ? -1 : 1)
+        progress = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1)
         self.date = date
     }
     
