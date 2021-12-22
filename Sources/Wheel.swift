@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 private let cycle = 29.53
 private let cycleRadians = .pi2 / cycle
