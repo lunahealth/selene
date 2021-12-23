@@ -23,13 +23,18 @@ public struct Wheel {
         return .init(x: width_2 + side * point.x, y: height_2 + side * point.y)
     }
     
-    public func accept(point: CGPoint, size: CGSize, padding: CGFloat) -> Bool {
+    public func move(point: CGPoint, size: CGSize, padding: CGFloat) -> Date? {
+        guard accept(point: point, size: size, padding: padding) else { return nil }
+        return move(point: point, size: size)
+    }
+    
+    func accept(point: CGPoint, size: CGSize, padding: CGFloat) -> Bool {
         {
             abs($0.x - point.x) < radius && abs($0.y - point.y) < radius
         } (origin(size: size, padding: padding))
     }
     
-    public func move(point: CGPoint, size: CGSize) -> Date {
+    func move(point: CGPoint, size: CGSize) -> Date {
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let originX = point.x - center.x
         let originY = center.y - point.y
