@@ -5,7 +5,7 @@ private let cycle = 29.53
 private let cycleRadians = .pi2 / cycle
 private let radius = 60.0
 
-public struct Wheel {
+public struct Wheel: Equatable {
     public let radians: Double
     let point: CGPoint
     private let date: Date
