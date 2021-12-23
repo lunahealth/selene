@@ -31,7 +31,9 @@ public struct Wheel: Equatable {
     
     public func move(point: CGPoint) -> Date? {
         guard accept(point: point) else { return nil }
-        return date(for: point)
+        let date = date(for: point)
+        guard !Calendar.current.isDate(self.date, inSameDayAs: date) else { return nil }
+        return date
     }
     
     func accept(point: CGPoint) -> Bool {

@@ -46,8 +46,7 @@ final class WheelTests: XCTestCase {
         let moon = Moon(inclination: .pi, apparentAngle: 1)
         let wheel = Wheel(date: date, moon: moon, correction: 0, size: .init(width: 1000, height: 1000), padding: 0)
         
-        XCTAssertEqual(date,
-                       wheel.move(point: wheel.origin))
+        XCTAssertNil(wheel.move(point: wheel.origin))
         
         XCTAssertEqual(-15,
                        Calendar.current.dateComponents([.day], from: date, to: wheel.date(for: .init(x: -1000, y: 500))).day!)
