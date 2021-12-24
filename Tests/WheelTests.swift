@@ -24,23 +24,6 @@ final class WheelTests: XCTestCase {
         XCTAssertEqual(.pi_2 + .pi, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).radians)
     }
     
-    func testPoint() {
-        var moon = Moon(inclination: .pi, apparentAngle: 1)
-        XCTAssertEqual(1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.x)
-        XCTAssertGreaterThan(0.1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.y)
-        XCTAssertLessThan(-0.1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.y)
-        
-        moon = .init(inclination: 0, apparentAngle: 0)
-        XCTAssertEqual(-1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.x)
-        XCTAssertGreaterThan(0.1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.y)
-        XCTAssertLessThan(-0.1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.y)
-        
-        moon = .init(inclination: .pi_2, apparentAngle: -1)
-        XCTAssertEqual(1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.y)
-        XCTAssertGreaterThan(0.1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.x)
-        XCTAssertLessThan(-0.1, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0).point.x)
-    }
-    
     func testMove() {
         let date = Date()
         let moon = Moon(inclination: .pi, apparentAngle: 1)
@@ -74,8 +57,23 @@ final class WheelTests: XCTestCase {
     }
     
     func testOrigin() {
-        let wheel = Wheel(date: .now, moon: .init(), correction: 0, size: .init(width: 10, height: 10), padding: 2)
-        XCTAssertEqual(.init(x: 2, y: 5), wheel.origin)
+        var moon = Moon(inclination: .pi, apparentAngle: 1)
+        let size = CGSize(width: 1000, height: 1000)
+        let padding = 20.0
+        
+        let wheel = Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding)
+        XCTAssertEqual(.init(x: 980, y: 499.9999999999999), wheel.origin)
+        
+        XCTAssertEqual(980, Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding).origin.x)
+        XCTAssertEqual(499.9999999999999, Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding).origin.y)
+        
+        moon = .init(inclination: 0, apparentAngle: 0)
+        XCTAssertEqual(20, Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding).origin.x)
+        XCTAssertEqual(500.00000000000006, Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding).origin.y)
+        
+        moon = .init(inclination: .pi_2, apparentAngle: -1)
+        XCTAssertEqual(980, Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding).origin.y)
+        XCTAssertEqual(500.00000000000006, Wheel(date: .now, moon: moon, correction: 0, size: size, padding: padding).origin.x)
     }
     
     func testAccept() {

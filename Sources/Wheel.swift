@@ -9,24 +9,21 @@ public struct Wheel: Equatable {
     public let radians: Double
     public let size: CGSize
     public let origin: CGPoint
-    let point: CGPoint
     private let date: Date
-    private let padding: CGFloat
+    private let side: Double
     private let center: CGPoint
     
-    public init(date: Date, moon: Moon, correction: Double, size: CGSize, padding: CGFloat) {
+    public init(date: Date, moon: Moon, correction: Double, size: CGSize, padding: Double) {
         radians = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1) + correction
-        point = .init(x: cos(radians), y: sin(radians))
         
         let width_2 = size.width / 2
         let height_2 = size.height / 2
-        let side = min(width_2, height_2) - padding
+        side = min(width_2, height_2) - padding
         center = .init(x: width_2, y: height_2)
-        origin = .init(x: width_2 + side * point.x, y: height_2 + side * point.y)
+        origin = Self.point(for: radians, center: center, side: side)
         
         self.date = date
         self.size = size
-        self.padding = padding
     }
     
     public func move(point: CGPoint) -> Date? {
@@ -36,11 +33,11 @@ public struct Wheel: Equatable {
         return date
     }
     
-    func accept(point: CGPoint) -> Bool {
-        abs(origin.x - point.x) < radius && abs(origin.y - point.y) < radius
+    public func point(for radians: Double) -> CGPoint {
+        Self.point(for: radians, center: center, side: side)
     }
     
-    func date(for point: CGPoint) -> Date {
+    public func radians(for point: CGPoint) -> Double {
         let originX = point.x - center.x
         let originY = center.y - point.y
         var position = atan2(originX, originY) - .pi_2
@@ -49,7 +46,15 @@ public struct Wheel: Equatable {
             position += .pi2
         }
         
-        var delta = position - radians
+        return position
+    }
+    
+    func accept(point: CGPoint) -> Bool {
+        abs(origin.x - point.x) < radius && abs(origin.y - point.y) < radius
+    }
+    
+    func date(for point: CGPoint) -> Date {
+        var delta = radians(for: point) - radians
         
         if abs(delta) > .pi {
             delta += .pi2
@@ -60,5 +65,10 @@ public struct Wheel: Equatable {
     
     func move(radians: Double) -> Date {
         Calendar.current.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
+    }
+    
+    private static func point(for radians: Double, center: CGPoint, side: Double) -> CGPoint {
+        let point = CGPoint(x: cos(radians), y: sin(radians))
+        return .init(x: center.x + side * point.x, y: center.y + side * point.y)
     }
 }
