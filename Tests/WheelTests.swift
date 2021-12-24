@@ -94,12 +94,12 @@ final class WheelTests: XCTestCase {
                           size: .init(width: 1000, height: 1000),
                           padding: 0)
         
-        XCTAssertEqual(.init(x: 999.3147673772869,
-                             y: 473.8320218785281),
+        XCTAssertEqual(.init(x: 862.6871855061438,
+                             y: 844.1772878468769),
                        wheel.approach(from: .init(x: 1000, y: 1000)))
         
-        XCTAssertEqual(.init(x: 993.8441702975689,
-                             y: 421.78276747988457),
+        XCTAssertEqual(.init(x: 175.27597583490825,
+                             y: 880.2029828000155),
                        wheel.approach(from: .init(x: 0, y: 1000)))
     }
 }
