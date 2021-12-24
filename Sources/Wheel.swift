@@ -7,7 +7,6 @@ private let radius = 60.0
 
 public struct Wheel: Equatable {
     public let radians: Double
-    public let size: CGSize
     public let origin: CGPoint
     private let date: Date
     private let side: Double
@@ -23,7 +22,6 @@ public struct Wheel: Equatable {
         origin = Self.point(for: radians, center: center, side: side)
         
         self.date = date
-        self.size = size
     }
     
     public func move(point: CGPoint) -> Date? {
