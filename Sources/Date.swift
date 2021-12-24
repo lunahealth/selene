@@ -6,6 +6,10 @@ private let secondsInADay = 86400.0
 private let flatHour = 21
 
 extension Date {
+    public var today: Bool {
+        Calendar.current.isDateInToday(self)
+    }
+    
     var julianDay: Double {
         (timeIntervalSince1970 / secondsInADay) - 0.5 + J1970 - J2000
     }
