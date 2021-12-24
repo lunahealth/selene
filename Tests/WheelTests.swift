@@ -86,4 +86,20 @@ final class WheelTests: XCTestCase {
         XCTAssertTrue(wheel.accept(point: .init(x: 59, y: 559)))
         XCTAssertTrue(wheel.accept(point: .init(x: -59, y: 441)))
     }
+    
+    func testApproach() {
+        let wheel = Wheel(date: .now,
+                          moon: .init(inclination: .pi, apparentAngle: 1),
+                          correction: 0,
+                          size: .init(width: 1000, height: 1000),
+                          padding: 0)
+        
+        XCTAssertEqual(.init(x: 999.8286624877786,
+                             y: 486.9115258460632),
+                       wheel.approach(from: .init(x: 1000, y: 1000)))
+        
+        XCTAssertEqual(.init(x: 998.458666866564,
+                             y: 460.7704521360772),
+                       wheel.approach(from: .init(x: 0, y: 1000)))
+    }
 }

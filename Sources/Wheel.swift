@@ -31,11 +31,42 @@ public struct Wheel: Equatable {
         return date
     }
     
-    public func point(for radians: Double) -> CGPoint {
-        Self.point(for: radians, center: center, side: side)
+    public func approach(from point: CGPoint) -> CGPoint {
+        let delta = delta(for: point)
+        
+        if abs(delta) > 0.005 {
+            return Self.point(for: radians + delta / -30, center: center, side: side)
+        }
+        
+        return origin
     }
     
-    public func radians(for point: CGPoint) -> Double {
+    func accept(point: CGPoint) -> Bool {
+        abs(origin.x - point.x) < radius && abs(origin.y - point.y) < radius
+    }
+    
+    func date(for point: CGPoint) -> Date {
+        move(radians: delta(for: point))
+    }
+    
+    func move(radians: Double) -> Date {
+        Calendar.current.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
+    }
+    
+    private func delta(for point: CGPoint) -> Double {
+        var delta = radians(for: point) - radians
+        if abs(delta) > .pi {
+            delta += .pi2
+        }
+        return delta
+    }
+    
+    private static func point(for radians: Double, center: CGPoint, side: Double) -> CGPoint {
+        let point = CGPoint(x: cos(radians), y: sin(radians))
+        return .init(x: center.x + side * point.x, y: center.y + side * point.y)
+    }
+    
+    private func radians(for point: CGPoint) -> Double {
         let originX = point.x - center.x
         let originY = center.y - point.y
         var position = atan2(originX, originY) - .pi_2
@@ -45,28 +76,5 @@ public struct Wheel: Equatable {
         }
         
         return position
-    }
-    
-    func accept(point: CGPoint) -> Bool {
-        abs(origin.x - point.x) < radius && abs(origin.y - point.y) < radius
-    }
-    
-    func date(for point: CGPoint) -> Date {
-        var delta = radians(for: point) - radians
-        
-        if abs(delta) > .pi {
-            delta += .pi2
-        }
-        
-        return move(radians: delta)
-    }
-    
-    func move(radians: Double) -> Date {
-        Calendar.current.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
-    }
-    
-    private static func point(for radians: Double, center: CGPoint, side: Double) -> CGPoint {
-        let point = CGPoint(x: cos(radians), y: sin(radians))
-        return .init(x: center.x + side * point.x, y: center.y + side * point.y)
     }
 }
