@@ -34,8 +34,8 @@ public struct Wheel: Equatable {
     public func approach(from point: CGPoint) -> CGPoint {
         let delta = delta(for: point)
         
-        if abs(delta) > 0.005 {
-            return Self.point(for: radians + delta / -30, center: center, side: side)
+        if abs(delta.delta) > 0.005 {
+            return Self.point(for: delta.radians / -30, center: center, side: side)
         }
         
         return origin
@@ -46,19 +46,20 @@ public struct Wheel: Equatable {
     }
     
     func date(for point: CGPoint) -> Date {
-        move(radians: delta(for: point))
+        move(radians: delta(for: point).delta)
     }
     
     func move(radians: Double) -> Date {
         Calendar.current.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
     }
     
-    private func delta(for point: CGPoint) -> Double {
-        var delta = radians(for: point) - radians
+    private func delta(for point: CGPoint) -> (radians: Double, delta: Double) {
+        let new = radians(for: point)
+        var delta = new - radians
         if abs(delta) > .pi {
             delta += .pi2
         }
-        return delta
+        return (radians: new + delta, delta: delta)
     }
     
     private static func point(for radians: Double, center: CGPoint, side: Double) -> CGPoint {
