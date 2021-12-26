@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Observatory {
+public final class Observatory {
     private(set) var cache = [Date : Moon]()
     private let coords: Coords
     
@@ -12,7 +12,7 @@ public struct Observatory {
         coords == other.flatten
     }
     
-    public mutating func week() -> [Day] {
+    public var week: [Day] {
         Calendar
             .current
             .trackingWeek
@@ -21,7 +21,7 @@ public struct Observatory {
             }
     }
     
-    public mutating func moon(for date: Date) -> Moon {
+    public func moon(for date: Date) -> Moon {
         let date = date.flatten
         guard let cached = cache[date] else {
             return add(date: date)
@@ -29,7 +29,7 @@ public struct Observatory {
         return cached
     }
     
-    private mutating func add(date: Date) -> Moon {
+    private func add(date: Date) -> Moon {
         let julianDay = date.julianDay
         let moon = Moon(julianDay: julianDay, sun: Earth.sun(julianDay: julianDay), location: coords.radians)
         cache[date] = moon

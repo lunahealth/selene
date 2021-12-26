@@ -3,12 +3,12 @@ import XCTest
 
 final class ObservatoryTests: XCTestCase {
     func testPhase() {
-        var observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        let observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
         XCTAssertEqual(.waxingCrescent, observatory.moon(for: .init(timeIntervalSince1970: 1577905200)).phase)
     }
     
     func testCache() {
-        var observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        let observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
 
         XCTAssertEqual(observatory.moon(for: .init(timeIntervalSince1970: 1577905200)),
                        observatory.moon(for: .init(timeIntervalSince1970: 1577905200)))
@@ -45,7 +45,7 @@ final class ObservatoryTests: XCTestCase {
                                                       month: 0,
                                                       day: 1,
                                                       hour: 0))!
-        var observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        let observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
         
         _ = observatory.moon(for: date0)
         _ = observatory.moon(for: date1)
