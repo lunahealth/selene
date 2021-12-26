@@ -2,28 +2,17 @@ import XCTest
 @testable import Selene
 
 final class ObservatoryTests: XCTestCase {
-    private var observatory: Observatory!
-    
-    override func setUp() {
-        observatory = .init()
-    }
-    
     func testPhase() {
-        let phase = observatory.moon(input: .init(date: .init(timeIntervalSince1970: 1577905200),
-                                                        coords: .init(latitude: 52.483343, longitude: 13.452053)))
-            .phase
-        XCTAssertEqual(.waxingCrescent, phase)
+        var observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        XCTAssertEqual(.waxingCrescent, observatory.moon(for: .init(timeIntervalSince1970: 1577905200)).phase)
     }
     
     func testCache() {
-        let a = observatory.moon(input: .init(date: .init(timeIntervalSince1970: 1577905200),
-                                                    coords: .init(latitude: 52.483343, longitude: 13.452053)))
-        let b = observatory.moon(input: .init(date: .init(timeIntervalSince1970: 1577905200),
-                                                    coords: .init(latitude: 52.483343, longitude: 13.452053)))
-        let count = observatory.cache.count
-        
-        XCTAssertEqual(a, b)
-        XCTAssertEqual(1, count)
+        var observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+
+        XCTAssertEqual(observatory.moon(for: .init(timeIntervalSince1970: 1577905200)),
+                       observatory.moon(for: .init(timeIntervalSince1970: 1577905200)))
+        XCTAssertEqual(1, observatory.cache.count)
     }
     
     func testFlattenTime() {
@@ -56,41 +45,34 @@ final class ObservatoryTests: XCTestCase {
                                                       month: 0,
                                                       day: 1,
                                                       hour: 0))!
-        let coords = Coords(latitude: 52.483343, longitude: 13.452053)
+        var observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
         
-        _ = observatory.moon(input: .init(date: date0, coords: coords))
-        _ = observatory.moon(input: .init(date: date1, coords: coords))
-        _ = observatory.moon(input: .init(date: date2, coords: coords))
-        _ = observatory.moon(input: .init(date: date3, coords: coords))
+        _ = observatory.moon(for: date0)
+        _ = observatory.moon(for: date1)
+        _ = observatory.moon(for: date2)
+        _ = observatory.moon(for: date3)
         
         var count = observatory.cache.count
         XCTAssertEqual(1, count)
         
-        _ = observatory.moon(input: .init(date: date4, coords: coords))
+        _ = observatory.moon(for: date4)
         
         count = observatory.cache.count
         XCTAssertEqual(2, count)
     }
     
     func testFlattenCoordinates() {
-        let date = Date.now
         let coords0 = Coords(latitude: 52.48, longitude: 13.45)
         let coords1 = Coords(latitude: 52.49, longitude: 13.46)
         let coords2 = Coords(latitude: 52.47, longitude: 13.47)
         let coords3 = Coords(latitude: 52.46, longitude: 13.49)
         let coords4 = Coords(latitude: 52.5, longitude: 13.45)
         
-        _ = observatory.moon(input: .init(date: date, coords: coords0))
-        _ = observatory.moon(input: .init(date: date, coords: coords1))
-        _ = observatory.moon(input: .init(date: date, coords: coords2))
-        _ = observatory.moon(input: .init(date: date, coords: coords3))
-        
-        var count = observatory.cache.count
-        XCTAssertEqual(1, count)
-        
-        _ = observatory.moon(input: .init(date: date, coords: coords4))
-        
-        count = observatory.cache.count
-        XCTAssertEqual(2, count)
+        let observatory = Observatory(coords: coords0)
+        XCTAssertTrue(observatory.equals(to: coords0))
+        XCTAssertTrue(observatory.equals(to: coords1))
+        XCTAssertTrue(observatory.equals(to: coords2))
+        XCTAssertTrue(observatory.equals(to: coords3))
+        XCTAssertFalse(observatory.equals(to: coords4))
     }
 }

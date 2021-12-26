@@ -1,30 +1,38 @@
 import Foundation
 
 public struct Observatory {
-    private(set) var cache = [Input : Moon]()
+    private(set) var cache = [Date : Moon]()
+    private let coords: Coords
     
-    public init() { }
+    public init(coords: Coords) {
+        self.coords = coords.flatten
+    }
     
-    public mutating func week(coords: Coords) -> [Day] {
+    public func equals(to other: Coords) -> Bool {
+        coords == other.flatten
+    }
+    
+    public mutating func week() -> [Day] {
         Calendar
             .current
             .trackingWeek
             .map {
-                .init(id: $0, moon: moon(input: .init(date: $0, coords: coords)))
+                .init(id: $0, moon: moon(for: $0))
             }
     }
     
-    public mutating func moon(input: Input) -> Moon {
-        guard let cached = cache[input] else {
-            return add(input: input)
+    public mutating func moon(for date: Date) -> Moon {
+        let date = date.flatten
+        guard let cached = cache[date] else {
+            return add(date: date)
         }
         return cached
     }
     
-    private mutating func add(input: Input) -> Moon {
-        let julianDay = input.date.julianDay
-        let moon = Moon(julianDay: julianDay, sun: Earth.sun(julianDay: julianDay), location: input.coords.radians)
-        cache[input] = moon
+    private mutating func add(date: Date) -> Moon {
+        let julianDay = date.julianDay
+        let moon = Moon(julianDay: julianDay, sun: Earth.sun(julianDay: julianDay), location: coords.radians)
+        cache[date] = moon
         return moon
     }
 }
