@@ -5,6 +5,15 @@ public struct Observatory {
     
     public init() { }
     
+    public mutating func week(coords: Coords) -> [Day] {
+        Calendar
+            .current
+            .trackingWeek
+            .map {
+                .init(id: $0, moon: moon(input: .init(date: $0, coords: coords)))
+            }
+    }
+    
     public mutating func moon(input: Input) -> Moon {
         guard let cached = cache[input] else {
             return add(input: input)
