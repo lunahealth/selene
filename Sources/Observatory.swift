@@ -12,21 +12,24 @@ public final class Observatory {
         coords == other.flatten
     }
     
-    public var week: [Day] {
-        Calendar
-            .global
-            .trackingWeek
-            .map {
-                .init(id: $0, moon: moon(for: $0))
-            }
-    }
-    
     public func moon(for date: Date) -> Moon {
         let date = date.flatten
         guard let cached = cache[date] else {
             return add(date: date)
         }
         return cached
+    }
+    
+    public func week(with archive: Archive) -> Week {
+        
+        
+//        Calendar
+//            .global
+//            .trackingWeek
+//            .map {
+//                .init(id: $0, moon: moon(for: $0))
+//            }
+        .init()
     }
     
     private func add(date: Date) -> Moon {

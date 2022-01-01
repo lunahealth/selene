@@ -4,15 +4,6 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     
-    public var week: [Journal] {
-        [journal
-            .last
-            .flatMap {
-                Calendar.global.isToday(journal: $0) ? $0 : nil
-            }
-        ?? .init()]
-    }
-    
     var journal: [Journal]
 
     public var data: Data {
