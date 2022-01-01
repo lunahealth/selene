@@ -10,14 +10,22 @@ final class JournalTests: XCTestCase {
     }
     
     func testWeek() async {
-        XCTAssertTrue(archive.week.isEmpty)
+        XCTAssertEqual(1, archive.week.count)
         
         archive.journal = [.init()]
+        XCTAssertEqual(1, archive.week.count)
         
-        XCTAssertTrue(1, archive.week.count)
+        let today = Calendar.global.today
+        archive.journal = .init(repeating: .init(timestamp: today - 1000000), count: 50)
+        XCTAssertEqual(7, archive.week.count)
+        XCTAssertEqual(today, archive.week.last?.timestamp)
         
-        archive.journal = .init(repeating: .init(), count: 50)
-        
-        XCTAssertTrue(7, archive.week.count)
+        archive.journal = .init(repeating: .init(timestamp: 0), count: 50)
+        XCTAssertEqual(7, archive.week.count)
+        XCTAssertEqual(today, archive.week.first?.timestamp)
+
+        archive.journal = .init(repeating: .init(timestamp: 0), count: 3)
+        XCTAssertEqual(4, archive.week.count)
+        XCTAssertEqual(today, archive.week.first?.timestamp)
     }
 }

@@ -14,7 +14,7 @@ public final class Observatory {
     
     public var week: [Day] {
         Calendar
-            .current
+            .global
             .trackingWeek
             .map {
                 .init(id: $0, moon: moon(for: $0))

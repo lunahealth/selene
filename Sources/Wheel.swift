@@ -27,7 +27,7 @@ public struct Wheel: Equatable {
     public func move(point: CGPoint) -> Date? {
         guard accept(point: point) else { return nil }
         let date = date(for: point)
-        guard !Calendar.current.isDate(self.date, inSameDayAs: date) else { return nil }
+        guard !Calendar.global.isDate(self.date, inSameDayAs: date) else { return nil }
         return date
     }
     
@@ -51,7 +51,7 @@ public struct Wheel: Equatable {
     }
     
     func move(radians: Double) -> Date {
-        Calendar.current.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
+        Calendar.global.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
     }
     
     private func delta(for rads: Double) -> Double {

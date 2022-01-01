@@ -32,7 +32,7 @@ final class WheelTests: XCTestCase {
         XCTAssertNil(wheel.move(point: wheel.origin))
         
         XCTAssertEqual(-15,
-                       Calendar.current.dateComponents([.day], from: date, to: wheel.date(for: .init(x: -1000, y: 500))).day!)
+                       Calendar.global.dateComponents([.day], from: date, to: wheel.date(for: .init(x: -1000, y: 500))).day!)
     }
     
     func testMoveWithRadians() {
@@ -44,16 +44,16 @@ final class WheelTests: XCTestCase {
                        wheel.move(radians: 0))
         
         XCTAssertEqual(0,
-                       Calendar.current.dateComponents([.day], from: date, to: wheel.move(radians: 0.49 / 29.53 * .pi2)).day!)
+                       Calendar.global.dateComponents([.day], from: date, to: wheel.move(radians: 0.49 / 29.53 * .pi2)).day!)
         
         XCTAssertEqual(1,
-                       Calendar.current.dateComponents([.day], from: date, to: wheel.move(radians: 0.51 / 29.53 * .pi2)).day!)
+                       Calendar.global.dateComponents([.day], from: date, to: wheel.move(radians: 0.51 / 29.53 * .pi2)).day!)
         
         XCTAssertEqual(1,
-                       Calendar.current.dateComponents([.day], from: date, to: wheel.move(radians: 1.1 / 29.53 * .pi2)).day!)
+                       Calendar.global.dateComponents([.day], from: date, to: wheel.move(radians: 1.1 / 29.53 * .pi2)).day!)
         
         XCTAssertEqual(55,
-                       Calendar.current.dateComponents([.day], from: date, to: wheel.move(radians: 55.4 / 29.53 * .pi2)).day!)
+                       Calendar.global.dateComponents([.day], from: date, to: wheel.move(radians: 55.4 / 29.53 * .pi2)).day!)
     }
     
     func testOrigin() {

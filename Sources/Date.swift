@@ -7,14 +7,14 @@ private let flatHour = 21
 
 extension Date {
     public var today: Bool {
-        Calendar.current.isDateInToday(self)
+        Calendar.global.isDateInToday(self)
     }
     
     public var trackable: Bool {
         self <= .now
         ? {
             $0 > -7 && $0 < 1
-        } (Calendar.current.dateComponents([.day], from: .now, to: self).day!)
+        } (Calendar.global.dateComponents([.day], from: .now, to: self).day!)
         : false
     }
     
@@ -23,8 +23,8 @@ extension Date {
     }
     
     var flatten: Self {
-        var components = Calendar.current.dateComponents([.timeZone, .year, .month, .day], from: self)
+        var components = Calendar.global.dateComponents([.timeZone, .year, .month, .day], from: self)
         components.hour = flatHour
-        return Calendar.current.date(from: components) ?? self
+        return Calendar.global.date(from: components) ?? self
     }
 }

@@ -1,16 +1,19 @@
 import Foundation
 import Archivable
 
-public struct Journal: Storable {
-    public var data: Data {
+struct Journal: Storable {
+    let timestamp: UInt32
+    
+    var data: Data {
         .init()
+        .adding(timestamp)
     }
     
-    public init(data: inout Data) {
-        
+    init(data: inout Data) {
+        timestamp = data.number()
     }
     
-    init() {
-        
+    init(timestamp: UInt32 = Calendar.global.today) {
+        self.timestamp = timestamp
     }
 }

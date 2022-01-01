@@ -16,31 +16,31 @@ final class ObservatoryTests: XCTestCase {
     }
     
     func testFlattenTime() {
-        let date0 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
+        let date0 = Calendar.global.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
                                                       hour: 0))!
         
-        let date1 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
+        let date1 = Calendar.global.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
                                                       hour: 5))!
         
-        let date2 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
+        let date2 = Calendar.global.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
                                                       hour: 9))!
         
-        let date3 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
+        let date3 = Calendar.global.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 0,
                                                       hour: 16))!
         
-        let date4 = Calendar.current.date(from: .init(timeZone: .init(secondsFromGMT: 0),
+        let date4 = Calendar.global.date(from: .init(timeZone: .init(secondsFromGMT: 0),
                                                       year: 2001,
                                                       month: 0,
                                                       day: 1,
