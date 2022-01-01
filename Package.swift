@@ -13,9 +13,13 @@ let package = Package(
             name: "Selene",
             targets: ["Selene"]),
     ],
+    dependencies: [
+        .package(name: "Archivable", url: "https://github.com/archivable/package.git", .branch("main"))
+    ],
     targets: [
         .target(
             name: "Selene",
+            dependencies: ["Archivable"],
             path: "Sources"),
         .testTarget(
             name: "Tests",
