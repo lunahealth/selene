@@ -13,15 +13,15 @@ final class ArchiveTests: XCTestCase {
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertTrue(archive.journal.isEmpty)
         
-        archive.journal = [.init(gmt: 1)
-                            .with(entry: .init(trait: .period, value: 55))
-                            .with(entry: .init(trait: .sleep, value: 3))]
+        archive.journal = [1 : .init()
+                            .with(trait: .period, value: 55)
+                            .with(trait: .sleep, value: 3)]
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(1, archive.journal.count)
-        XCTAssertEqual(1, archive.journal.first?.gmt)
-        XCTAssertEqual(2, archive.journal.first?.entries.count)
+        XCTAssertEqual(1, archive.journal.first?.key)
+        XCTAssertEqual(2, archive.journal.first?.value.traits.count)
         
-        archive.journal = [.init(gmt: 1), .init(gmt: 2)]
+        archive.journal = [1 : .init(), 2 : .init()]
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(2, archive.journal.count)
     }
@@ -43,14 +43,14 @@ final class ArchiveTests: XCTestCase {
             .date(from: .init(timeZone: mexico, year: 2021, month: 1, day: 2, hour: 0))!
         let dayMexico = Day(id: dateMexico.gmtDay, date: dateMexico, moon: .init())
         
-        XCTAssertTrue(archive.entries(for: dayMexico).isEmpty)
+        XCTAssertNil(archive.journal[dayMexico.id]?.traits.isEmpty)
         
-        archive.journal = [.init(gmt: dayBerlin.id)]
-        XCTAssertTrue(archive.entries(for: dayMexico).isEmpty)
+        archive.journal = [dayBerlin.id : .init()]
+        XCTAssertTrue(archive.journal[dayMexico.id]!.traits.isEmpty)
         
-        archive.journal = [.init(gmt: dayBerlin.id).with(entry: .init(trait: .period, value: 99))]
-        XCTAssertEqual(.period, archive.entries(for: dayMexico).first?.trait)
-        XCTAssertEqual(99, archive.entries(for: dayMexico).first?.value)
+        archive.journal = [dayBerlin.id : Journal().with(trait: .period, value: 99)]
+        XCTAssertEqual(.period, archive.journal[dayMexico.id]!.traits.first?.key)
+        XCTAssertEqual(99, archive.journal[dayMexico.id]!.traits.first?.value)
         
         Calendar.global.timeZone = timezone
     }

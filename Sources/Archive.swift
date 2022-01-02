@@ -3,31 +3,29 @@ import Archivable
 
 public struct Archive: Arch {
     public var timestamp: UInt32
-    
-    var journal: Set<Journal>
+    public internal(set) var journal: [UInt32 : Journal]
 
     public var data: Data {
         .init()
-        .adding(size: UInt16.self, collection: journal)
+        .adding(UInt16(journal.count))
+        .adding(journal.flatMap {
+            Data()
+                .adding($0.key)
+                .adding($0.value)
+        })
     }
     
     public init() {
         timestamp = 0
-        journal = []
+        journal = [:]
     }
     
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
         var data = data
         self.timestamp = timestamp
-        journal = .init(data.collection(size: UInt16.self))
-    }
-    
-    public func entries(for day: Day) -> Set<Entry> {
-        journal
-            .first {
-                $0.gmt == day.id
-            }?
-            .entries
-        ?? []
+        journal = (0 ..< .init(data.number() as UInt16))
+            .reduce(into: [:]) { result, _ in
+                result[data.number()] = .init(data: &data)
+            }
     }
 }

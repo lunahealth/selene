@@ -1,42 +1,41 @@
 import Foundation
 import Archivable
 
-struct Journal: Storable, Hashable {
-    let gmt: UInt32
-    let entries: Set<Entry>
+public struct Journal: Storable {
+    public let traits: [Trait : UInt8]
     
-    var data: Data {
+    public var data: Data {
         .init()
-        .adding(gmt)
-        .adding(size: UInt8.self, collection: entries)
+        .adding(UInt8(traits.count))
+        .adding(traits.flatMap {
+            Data()
+                .adding($0.key.rawValue)
+                .adding($0.value)
+        })
     }
     
-    init(data: inout Data) {
-        gmt = data.number()
-        entries = .init(data.collection(size: UInt8.self))
+    public init(data: inout Data) {
+        traits = (0 ..< .init(data.number() as UInt8))
+            .reduce(into: [:]) { result, _ in
+                result[.init(rawValue: data.number())!] = data.number()
+            }
     }
     
-    init(gmt: UInt32) {
-        self.init(gmt: gmt, entries: [])
+    init() {
+        self.init(traits: [:])
     }
     
-    private init(gmt: UInt32, entries: Set<Entry>) {
-        self.gmt = gmt
-        self.entries = entries
+    private init(traits: [Trait : UInt8]) {
+        self.traits = traits
     }
     
-    func with(entry: Entry) -> Self {
-        var entries = entries
-        entries.remove(entry)
-        entries.insert(entry)
-        return .init(gmt: gmt, entries: entries)
-    }
-    
-    func hash(into: inout Hasher) {
-        into.combine(gmt)
-    }
-    
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.gmt == rhs.gmt
+    public func with(trait: Trait, value: Double) -> Self {
+        var traits = traits
+        traits[trait] = value < 0
+            ? 0
+            : value > 100
+                ? 100
+                : .init(round(value))
+        return .init(traits: traits)
     }
 }
