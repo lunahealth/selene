@@ -3,8 +3,8 @@ import XCTest
 
 final class CalendarTests: XCTestCase {
     func testTrackingWeeek() {
-        XCTAssertEqual(7, Calendar.global.trackingWeek.count)
-        XCTAssertTrue(Calendar.global.isDateInToday(Calendar.global.trackingWeek.last!))
-        XCTAssertEqual(6, Calendar.global.dateComponents([.day], from: Calendar.global.trackingWeek.first!, to: .now).day!)
+        XCTAssertEqual(7, Calendar.global.week.count)
+        XCTAssertTrue(Calendar.global.isDateInToday(Calendar.global.week.last!))
+        XCTAssertEqual(6, Calendar.global.dateComponents([.day], from: Calendar.global.week.first!, to: .now).day!)
     }
 }

@@ -4,7 +4,7 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     
-    var journal: [Journal]
+    var journal: Set<Journal>
 
     public var data: Data {
         .init()
@@ -19,6 +19,6 @@ public struct Archive: Arch {
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
         var data = data
         self.timestamp = timestamp
-        journal = data.collection(size: UInt16.self)
+        journal = .init(data.collection(size: UInt16.self))
     }
 }

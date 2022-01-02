@@ -4,6 +4,15 @@ public final class Observatory {
     private(set) var cache = [Date : Moon]()
     private let coords: Coords
     
+    public var week: [Day] {
+        Calendar
+            .global
+            .week
+            .map {
+                .init(id: 0, date: $0, moon: moon(for: $0))
+            }
+    }
+    
     public init(coords: Coords) {
         self.coords = coords.flatten
     }
@@ -18,18 +27,6 @@ public final class Observatory {
             return add(date: date)
         }
         return cached
-    }
-    
-    public func week(with archive: Archive) -> Week {
-        
-        
-//        Calendar
-//            .global
-//            .trackingWeek
-//            .map {
-//                .init(id: $0, moon: moon(for: $0))
-//            }
-        .init()
     }
     
     private func add(date: Date) -> Moon {

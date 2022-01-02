@@ -1,19 +1,23 @@
 import Foundation
 import Archivable
 
-struct Journal: Storable {
-    let timestamp: UInt32
+struct Journal: Storable, Hashable {
+    let gmt: UInt32
     
     var data: Data {
         .init()
-        .adding(timestamp)
+        .adding(gmt)
     }
     
     init(data: inout Data) {
-        timestamp = data.number()
+        gmt = data.number()
     }
     
-    init(timestamp: UInt32 = Calendar.global.today) {
-        self.timestamp = timestamp
+    init(gmt: UInt32 = Calendar.global.today) {
+        self.gmt = gmt
+    }
+    
+    func hash(into: inout Hasher) {
+        into.combine(gmt)
     }
 }

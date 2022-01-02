@@ -11,7 +11,7 @@ extension Calendar {
         .init(timeZone.secondsFromGMT())
     }
     
-    var trackingWeek: [Date] {
+    var week: [Date] {
         (0 ..< 7)
             .map {
                 date(byAdding: .day, value: -$0, to: .now)!
@@ -19,7 +19,12 @@ extension Calendar {
             .reversed()
     }
     
-    func isToday(journal: Journal) -> Bool {
-        isDateInToday(.init(timeIntervalSince1970: .init(journal.timestamp) - offset))
+    func gmtDay(from date: Date) -> Date {
+        .init(timeIntervalSince1970: date.timeIntervalSince1970 + offset)
+    }
+    
+    func isSame(date: Date, as d: Date) -> Bool {
+        isDate(.init(timeIntervalSince1970: date.timeIntervalSince1970 - offset),
+               inSameDayAs: .init(timeIntervalSince1970: d.timeIntervalSince1970 - offset))
     }
 }
