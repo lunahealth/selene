@@ -13,7 +13,7 @@ struct Journal: Storable, Hashable {
         gmt = data.number()
     }
     
-    init(gmt: UInt32 = Calendar.global.today) {
+    init(gmt: UInt32) {
         self.gmt = gmt
     }
     

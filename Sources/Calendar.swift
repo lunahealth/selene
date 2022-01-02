@@ -2,12 +2,8 @@ import Foundation
 
 extension Calendar {
     static var global = current
-    
-    var today: UInt32 {
-        .init(startOfDay(for: .now).timeIntervalSince1970 + offset)
-    }
-    
-    var offset: TimeInterval {
+
+    private var offset: TimeInterval {
         .init(timeZone.secondsFromGMT())
     }
     
@@ -21,10 +17,5 @@ extension Calendar {
     
     func gmtDay(from date: Date) -> Date {
         .init(timeIntervalSince1970: date.timeIntervalSince1970 + offset)
-    }
-    
-    func isSame(date: Date, as d: Date) -> Bool {
-        isDate(.init(timeIntervalSince1970: date.timeIntervalSince1970 - offset),
-               inSameDayAs: .init(timeIntervalSince1970: d.timeIntervalSince1970 - offset))
     }
 }
