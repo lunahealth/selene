@@ -9,7 +9,7 @@ public final class Observatory {
             .global
             .week
             .map {
-                .init(id: 0, date: $0, moon: moon(for: $0))
+                .init(id: $0.gmtDay, date: $0, moon: moon(for: $0))
             }
     }
     

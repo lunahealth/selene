@@ -21,4 +21,13 @@ public struct Archive: Arch {
         self.timestamp = timestamp
         journal = .init(data.collection(size: UInt16.self))
     }
+    
+    public func entries(for day: Day) -> Set<Entry> {
+        journal
+            .first {
+                $0.gmt == day.id
+            }?
+            .entries
+        ?? []
+    }
 }

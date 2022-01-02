@@ -27,4 +27,8 @@ extension Date {
         components.hour = flatHour
         return Calendar.global.date(from: components) ?? self
     }
+    
+    var gmtDay: UInt32 {
+        Calendar.global.gmtDay(from: self).timestamp
+    }
 }
