@@ -1,7 +1,7 @@
 import Foundation
 import Archivable
 
-public struct Journal: Storable {
+public struct Journal: Storable, Equatable {
     public let traits: [Trait : UInt8]
     
     public var data: Data {
@@ -36,6 +36,12 @@ public struct Journal: Storable {
             : value > 100
                 ? 100
                 : .init(round(value))
+        return .init(traits: traits)
+    }
+    
+    public func remove(trait: Trait) -> Self {
+        var traits = traits
+        traits.removeValue(forKey: trait)
         return .init(traits: traits)
     }
 }

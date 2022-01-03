@@ -2,23 +2,23 @@ import Foundation
 import Archivable
 
 extension Settings {
-    public struct Option: Storable {
+    public struct Option: Storable, Identifiable, Equatable {
         public var active: Bool
-        public let trait: Trait
+        public let id: Trait
         
         public var data: Data {
             .init()
-            .adding(trait.rawValue)
+            .adding(id.rawValue)
             .adding(active)
         }
         
         public init(data: inout Data) {
-            trait = .init(rawValue: data.number())!
+            id = .init(rawValue: data.number())!
             active = data.bool()
         }
         
         public init(trait: Trait, active: Bool) {
-            self.trait = trait
+            self.id = trait
             self.active = active
         }
     }

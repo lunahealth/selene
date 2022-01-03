@@ -28,4 +28,10 @@ final class JournalTests: XCTestCase {
         XCTAssertEqual(100, Journal().with(trait: .period, value: 101).traits[.period])
         XCTAssertEqual(6, Journal().with(trait: .period, value: 5.6).traits[.period])
     }
+    
+    func testRemove() {
+        XCTAssertTrue(Journal()
+                        .with(trait: .period, value: 5)
+                        .remove(trait: .period).traits.isEmpty)
+    }
 }

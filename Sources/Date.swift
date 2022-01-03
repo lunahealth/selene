@@ -28,7 +28,7 @@ extension Date {
         return Calendar.global.date(from: components) ?? self
     }
     
-    var gmtDay: UInt32 {
+    var journal: UInt32 {
         Calendar.global.gmtDay(from: self).timestamp
     }
 }
