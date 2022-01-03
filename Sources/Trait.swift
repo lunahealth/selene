@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Trait: UInt8 {
+public enum Trait: UInt8, CaseIterable {
     case
     period,
     mood,

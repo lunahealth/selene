@@ -24,6 +24,13 @@ final class ArchiveTests: XCTestCase {
         archive.journal = [1 : .init(), 2 : .init()]
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(2, archive.journal.count)
+        
+        archive.settings = .init(traits: [.init(trait: .period, active: true), .init(trait: .sleep, active: false)])
+        archive = await Archive.prototype(data: archive.compressed)
+        XCTAssertEqual(.period, archive.settings.traits.first?.trait)
+        XCTAssertTrue(archive.settings.traits.first!.active)
+        XCTAssertEqual(.sleep, archive.settings.traits.last?.trait)
+        XCTAssertFalse(archive.settings.traits.last!.active)
     }
     
     func testJournal() {

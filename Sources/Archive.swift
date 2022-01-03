@@ -4,6 +4,7 @@ import Archivable
 public struct Archive: Arch {
     public var timestamp: UInt32
     public internal(set) var journal: [UInt32 : Journal]
+    public internal(set) var settings: Settings
 
     public var data: Data {
         .init()
@@ -13,11 +14,13 @@ public struct Archive: Arch {
                 .adding($0.key)
                 .adding($0.value)
         })
+        .adding(settings)
     }
     
     public init() {
         timestamp = 0
         journal = [:]
+        settings = .init()
     }
     
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
@@ -27,5 +30,6 @@ public struct Archive: Arch {
             .reduce(into: [:]) { result, _ in
                 result[data.number()] = .init(data: &data)
             }
+        settings = data.prototype()
     }
 }
