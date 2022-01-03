@@ -14,5 +14,7 @@ public enum Trait: UInt8, CaseIterable {
     eat,
     sweets,
     drink,
-    smoke
+    smoke,
+    crumbs,
+    online
 }
