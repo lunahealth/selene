@@ -21,7 +21,7 @@ public struct Journal: Storable, Equatable {
             }
     }
     
-    init() {
+    public init() {
         self.init(traits: [:])
     }
     
