@@ -15,7 +15,9 @@ extension Calendar {
             .reversed()
     }
     
-    func gmtDay(from date: Date) -> Date {
-        .init(timeIntervalSince1970: date.timeIntervalSince1970 + offset)
+    func journal(from: Date) -> Date {
+        var components = dateComponents([.year, .month, .day], from: from)
+        components.timeZone = .init(secondsFromGMT: 0)
+        return date(from: components) ?? from
     }
 }

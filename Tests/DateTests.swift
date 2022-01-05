@@ -29,7 +29,7 @@ final class DateTests: XCTestCase {
         
         let date1 = Calendar
             .global
-            .gmtDay(from: Calendar
+            .journal(from: Calendar
                         .global
                         .date(from: .init(timeZone: berlin, year: 2021, month: 1, day: 2, hour: 1))!)
         
@@ -38,11 +38,34 @@ final class DateTests: XCTestCase {
         
         let date2 = Calendar
             .global
-            .gmtDay(from: Calendar
+            .journal(from: Calendar
                         .global
                         .date(from: .init(timeZone: mexico, year: 2021, month: 1, day: 2, hour: 1))!)
         
         XCTAssertTrue(Calendar.global.isDate(date1, inSameDayAs: date2))
         Calendar.global.timeZone = timezone
+    }
+    
+    func testGmtDayDifference() {
+        let date1 = Calendar
+            .global
+            .journal(from: Calendar
+                        .global
+                        .date(from: .init(year: 2021, month: 1, day: 2, hour: 0))!)
+        
+        let date2 = Calendar
+            .global
+            .journal(from: Calendar
+                        .global
+                        .date(from: .init(year: 2021, month: 1, day: 2, hour: 1))!)
+        
+        let date3 = Calendar
+            .global
+            .journal(from: Calendar
+                        .global
+                        .date(from: .init(year: 2021, month: 1, day: 2, hour: 22))!)
+        
+        XCTAssertEqual(date1, date2)
+        XCTAssertEqual(date1, date3)
     }
 }

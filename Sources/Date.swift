@@ -29,6 +29,6 @@ extension Date {
     }
     
     var journal: UInt32 {
-        Calendar.global.gmtDay(from: self).timestamp
+        Calendar.global.journal(from: self).timestamp
     }
 }
