@@ -63,8 +63,8 @@ final class ObservatoryTests: XCTestCase {
     }
     
     func testFlattenCoordinates() {
-        let coords0 = Coords(latitude: 52.482, longitude: 13.453)
-        let coords1 = Coords(latitude: 52.481, longitude: 13.452)
+        let coords0 = Coords(latitude: 52.4820, longitude: 13.4531)
+        let coords1 = Coords(latitude: 52.4820, longitude: 13.4530)
         let coords2 = Coords(latitude: 52.5, longitude: 13.45)
         
         let observatory = Observatory()
