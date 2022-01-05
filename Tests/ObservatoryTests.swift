@@ -63,11 +63,9 @@ final class ObservatoryTests: XCTestCase {
     }
     
     func testFlattenCoordinates() {
-        let coords0 = Coords(latitude: 52.48, longitude: 13.45)
-        let coords1 = Coords(latitude: 52.49, longitude: 13.46)
-        let coords2 = Coords(latitude: 52.47, longitude: 13.47)
-        let coords3 = Coords(latitude: 52.46, longitude: 13.49)
-        let coords4 = Coords(latitude: 52.5, longitude: 13.45)
+        let coords0 = Coords(latitude: 52.482, longitude: 13.453)
+        let coords1 = Coords(latitude: 52.481, longitude: 13.452)
+        let coords2 = Coords(latitude: 52.5, longitude: 13.45)
         
         let observatory = Observatory()
         observatory.update(to: coords0)
@@ -76,10 +74,8 @@ final class ObservatoryTests: XCTestCase {
         
         observatory.update(to: coords0)
         observatory.update(to: coords1)
-        observatory.update(to: coords2)
-        observatory.update(to: coords3)
         XCTAssertEqual(1, observatory.cache.count)
-        observatory.update(to: coords4)
+        observatory.update(to: coords2)
         XCTAssertTrue(observatory.cache.isEmpty)
     }
 }

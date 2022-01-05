@@ -2,7 +2,7 @@ import Foundation
 import Archivable
 import CoreLocation
 
-private let flatRate = 10.0
+private let flatRate = 100.0
 
 public struct Coords: Storable, Hashable {
     public var data: Data {
@@ -19,7 +19,7 @@ public struct Coords: Storable, Hashable {
     }
     
     var flatten: Self {
-        .init(latitude: floor(latitude * flatRate) / flatRate, longitude: floor(longitude * flatRate) / flatRate)
+        .init(latitude: round(latitude * flatRate) / flatRate, longitude: round(longitude * flatRate) / flatRate)
     }
     
     var inverse: Self {
