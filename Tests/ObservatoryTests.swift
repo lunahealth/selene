@@ -3,12 +3,13 @@ import XCTest
 
 final class ObservatoryTests: XCTestCase {
     func testPhase() {
-        let observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        let observatory = Observatory()
+        observatory.update(to: .init(latitude: 52.483343, longitude: 13.452053))
         XCTAssertEqual(.waxingCrescent, observatory.moon(for: .init(timeIntervalSince1970: 1577905200)).phase)
     }
     
     func testCache() {
-        let observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        let observatory = Observatory()
 
         XCTAssertEqual(observatory.moon(for: .init(timeIntervalSince1970: 1577905200)),
                        observatory.moon(for: .init(timeIntervalSince1970: 1577905200)))
@@ -45,7 +46,7 @@ final class ObservatoryTests: XCTestCase {
                                                       month: 0,
                                                       day: 1,
                                                       hour: 0))!
-        let observatory = Observatory(coords: .init(latitude: 52.483343, longitude: 13.452053))
+        let observatory = Observatory()
         
         _ = observatory.moon(for: date0)
         _ = observatory.moon(for: date1)
@@ -68,11 +69,17 @@ final class ObservatoryTests: XCTestCase {
         let coords3 = Coords(latitude: 52.46, longitude: 13.49)
         let coords4 = Coords(latitude: 52.5, longitude: 13.45)
         
-        let observatory = Observatory(coords: coords0)
-        XCTAssertTrue(observatory.equals(to: coords0))
-        XCTAssertTrue(observatory.equals(to: coords1))
-        XCTAssertTrue(observatory.equals(to: coords2))
-        XCTAssertTrue(observatory.equals(to: coords3))
-        XCTAssertFalse(observatory.equals(to: coords4))
+        let observatory = Observatory()
+        observatory.update(to: coords0)
+        
+        _ = observatory.moon(for: .init(timeIntervalSince1970: 1577905200))
+        
+        observatory.update(to: coords0)
+        observatory.update(to: coords1)
+        observatory.update(to: coords2)
+        observatory.update(to: coords3)
+        XCTAssertEqual(1, observatory.cache.count)
+        observatory.update(to: coords4)
+        XCTAssertTrue(observatory.cache.isEmpty)
     }
 }
