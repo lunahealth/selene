@@ -32,10 +32,10 @@ final class ArchiveTests: XCTestCase {
         XCTAssertEqual(.sleep, archive.settings.traits.last?.id)
         XCTAssertFalse(archive.settings.traits.last!.active)
         
-        archive.coords = .init(latitude: 5.4321, longitude: 1.2345)
+        archive.coords = .init(latitude: 5.4321, longitude: -1.2345)
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(5.4, archive.coords.latitude)
-        XCTAssertEqual(1.2, archive.coords.longitude)
+        XCTAssertEqual(-1.2, archive.coords.longitude)
     }
     
     func testJournal() {
