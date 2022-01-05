@@ -1,9 +1,16 @@
 import Foundation
+import Archivable
 import CoreLocation
 
 private let flatRate = 10.0
 
-public struct Coords: Hashable {
+public struct Coords: Storable, Hashable {
+    public var data: Data {
+        .init()
+        .adding(UInt16(latitude * flatRate))
+        .adding(UInt16(longitude * flatRate))
+    }
+    
     public let latitude: Double
     public let longitude: Double
     
@@ -21,6 +28,11 @@ public struct Coords: Hashable {
     
     public init(coordinate: CLLocationCoordinate2D) {
         self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+    }
+    
+    public init(data: inout Data) {
+        latitude = .init(data.number() as UInt16) / flatRate
+        longitude = .init(data.number() as UInt16) / flatRate
     }
     
     init(latitude: Double, longitude: Double) {

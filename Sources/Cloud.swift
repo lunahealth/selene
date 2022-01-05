@@ -17,4 +17,10 @@ extension Cloud where Output == Archive {
         }
         await stream()
     }
+    
+    public func coords(latitude: Double, longitude: Double) async {
+        guard model.coords.latitude != latitude && model.coords.longitude != longitude else { return }
+        model.coords = .init(latitude: latitude, longitude: longitude)
+        await stream()
+    }
 }
