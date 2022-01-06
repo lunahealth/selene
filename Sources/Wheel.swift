@@ -39,7 +39,7 @@ public struct Wheel: Equatable {
             return Self.point(for: new + delta / (abs(delta) > .pi
                                                   ? -2
                                                   : abs(delta) > .pi_2
-                                                    ? -5
+                                                    ? -6
                                                     : -30), center: center, side: side)
         }
         
