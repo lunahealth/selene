@@ -36,7 +36,11 @@ public struct Wheel: Equatable {
         let delta = delta(for: new)
         
         if abs(delta) > 0.005 {
-            return Self.point(for: new + delta / (abs(delta) > .pi_2 ? -5 : -30), center: center, side: side)
+            return Self.point(for: new + delta / (abs(delta) > .pi
+                                                  ? -2
+                                                  : abs(delta) > .pi_2
+                                                    ? -5
+                                                    : -30), center: center, side: side)
         }
         
         return origin
