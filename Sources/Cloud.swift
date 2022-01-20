@@ -2,9 +2,12 @@ import Foundation
 import Archivable
 
 extension Cloud where Output == Archive {
-    public func update(traits: [Settings.Option]) async {
-        guard traits != model.settings.traits else { return }
-        model.settings = .init(traits: traits)
+    public func toggle(trait: Trait, mode: Bool) async {
+        if mode {
+            model.settings = model.settings.adding(trait: trait)
+        } else {
+            model.settings = model.settings.removing(trait: trait)
+        }
         await stream()
     }
     

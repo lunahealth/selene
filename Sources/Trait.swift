@@ -2,20 +2,10 @@ import Foundation
 
 public enum Trait: UInt8, CaseIterable {
     case
+    exercise,
+    focus,
     period,
     mood,
-    sleep,
     nutrition,
-    workout,
-    walk,
-    focus,
-    water,
-    work,
-    eat,
-    sweets,
-    drink,
-    smoke,
-    cramps,
-    online,
-    pms
+    sleep
 }

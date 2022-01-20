@@ -25,12 +25,11 @@ final class ArchiveTests: XCTestCase {
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(2, archive.journal.count)
         
-        archive.settings = .init(traits: [.init(trait: .period, active: true), .init(trait: .sleep, active: false)])
+        archive.settings = archive.settings.adding(trait: .period).adding(trait: .sleep)
         archive = await Archive.prototype(data: archive.compressed)
-        XCTAssertEqual(.period, archive.settings.traits.first?.id)
-        XCTAssertTrue(archive.settings.traits.first!.active)
-        XCTAssertEqual(.sleep, archive.settings.traits.last?.id)
-        XCTAssertFalse(archive.settings.traits.last!.active)
+        XCTAssertTrue(archive.settings.traits.contains(.period))
+        XCTAssertTrue(archive.settings.traits.contains(.sleep))
+        XCTAssertFalse(archive.settings.traits.contains(.exercise))
         
         archive.coords = .init(latitude: 5.4321, longitude: -1.2345)
         archive = await Archive.prototype(data: archive.compressed)

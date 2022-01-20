@@ -13,10 +13,15 @@ final class CloudTests: XCTestCase {
         var model = await cloud.model
         XCTAssertTrue(model.settings.traits.isEmpty)
         
-        await cloud.update(traits: [.init(trait: .period, active: true)])
+        await cloud.toggle(trait: .period, mode: true)
         
         model = await cloud.model
-        XCTAssertEqual(.period, model.settings.traits.first?.id)
+        XCTAssertEqual(.period, model.settings.traits.first)
+        
+        await cloud.toggle(trait: .period, mode: false)
+        
+        model = await cloud.model
+        XCTAssertTrue(model.settings.traits.isEmpty)
     }
     
     func testTrack() async {
