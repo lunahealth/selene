@@ -10,14 +10,6 @@ extension Date {
         Calendar.global.isDateInToday(self)
     }
     
-    public var trackable: Bool {
-        self <= .now
-        ? {
-            $0 > -7 && $0 < 1
-        } (Calendar.global.dateComponents([.day], from: .now, to: self).day!)
-        : false
-    }
-    
     var julianDay: Double {
         (timeIntervalSince1970 / secondsInADay) - 0.5 + J1970 - J2000
     }
