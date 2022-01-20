@@ -88,7 +88,7 @@ final class WheelTests: XCTestCase {
     }
     
     func testApproach() {
-        let wheel = Wheel(date: .now,
+        let wheel = Wheel(date: Calendar.global.date(from: .init(year: 2022))!,
                           moon: .init(inclination: .pi, apparentAngle: 1),
                           correction: 0,
                           size: .init(width: 1000, height: 1000),
@@ -98,8 +98,8 @@ final class WheelTests: XCTestCase {
                              y: 844.1772878468769),
                        wheel.approach(from: .init(x: 1000, y: 1000)))
         
-        XCTAssertEqual(.init(x: 345.49150281252633,
-                             y: 975.5282581475768),
+        XCTAssertEqual(.init(x: 308.65828381745513,
+                             y: 961.9397662556433),
                        wheel.approach(from: .init(x: 0, y: 1000)))
     }
 }
