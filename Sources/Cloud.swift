@@ -4,11 +4,14 @@ import Archivable
 extension Cloud where Output == Archive {
     public func toggle(trait: Trait, mode: Bool) async {
         if mode {
+            guard !model.settings.traits.contains(trait) else { return }
             model.settings = model.settings.adding(trait: trait)
+            await stream()
         } else {
+            guard model.settings.traits.contains(trait) else { return }
             model.settings = model.settings.removing(trait: trait)
+            await stream()
         }
-        await stream()
     }
     
     public func track(day: Day, journal: Journal) async {
