@@ -23,7 +23,7 @@ extension Cloud where Output == Archive {
     public func remove(day: Day, trait: Trait) async {
         await update(day: day, journal: model
                         .journal[day.journal, default: .init()]
-                        .remove(trait: trait))
+                        .removing(trait: trait))
     }
     
     public func coords(latitude: Double, longitude: Double) async {

@@ -35,7 +35,7 @@ public struct Journal: Storable, Equatable {
         return .init(traits: traits)
     }
     
-    func remove(trait: Trait) -> Self {
+    func removing(trait: Trait) -> Self {
         var traits = traits
         traits.removeValue(forKey: trait)
         return .init(traits: traits)

@@ -24,6 +24,6 @@ final class JournalTests: XCTestCase {
     func testRemove() {
         XCTAssertTrue(Journal()
                         .with(trait: .period, level: .high)
-                        .remove(trait: .period).traits.isEmpty)
+                        .removing(trait: .period).traits.isEmpty)
     }
 }
