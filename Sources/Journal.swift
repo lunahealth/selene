@@ -2,7 +2,7 @@ import Foundation
 import Archivable
 
 public struct Journal: Storable, Equatable {
-    public let traits: [Trait : UInt8]
+    public let traits: [Trait : Level]
     
     public var data: Data {
         .init()
@@ -10,36 +10,32 @@ public struct Journal: Storable, Equatable {
         .adding(traits.flatMap {
             Data()
                 .adding($0.key.rawValue)
-                .adding($0.value)
+                .adding($0.value.rawValue)
         })
     }
     
     public init(data: inout Data) {
         traits = (0 ..< .init(data.number() as UInt8))
             .reduce(into: [:]) { result, _ in
-                result[.init(rawValue: data.number())!] = data.number()
+                result[.init(rawValue: data.number())!] = .init(rawValue: data.number())!
             }
     }
     
-    public init() {
+    init() {
         self.init(traits: [:])
     }
     
-    private init(traits: [Trait : UInt8]) {
+    private init(traits: [Trait : Level]) {
         self.traits = traits
     }
     
-    public func with(trait: Trait, value: Double) -> Self {
+    func with(trait: Trait, level: Level) -> Self {
         var traits = traits
-        traits[trait] = value < 0
-            ? 0
-            : value > 100
-                ? 100
-                : .init(round(value))
+        traits[trait] = level
         return .init(traits: traits)
     }
     
-    public func remove(trait: Trait) -> Self {
+    func remove(trait: Trait) -> Self {
         var traits = traits
         traits.removeValue(forKey: trait)
         return .init(traits: traits)

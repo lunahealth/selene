@@ -14,19 +14,31 @@ extension Cloud where Output == Archive {
         }
     }
     
-    public func track(day: Day, journal: Journal) async {
-        guard model.journal[day.journal] != journal else { return }
-        if journal.traits.isEmpty {
-            model.journal.removeValue(forKey: day.journal)
-        } else {
-            model.journal[day.journal] = journal
-        }
-        await stream()
+    public func track(day: Day, trait: Trait, level: Level) async {
+        await update(day: day, journal: model
+                        .journal[day.journal, default: .init()]
+                        .with(trait: trait, level: level))
+    }
+    
+    public func remove(day: Day, trait: Trait) async {
+        await update(day: day, journal: model
+                        .journal[day.journal, default: .init()]
+                        .remove(trait: trait))
     }
     
     public func coords(latitude: Double, longitude: Double) async {
         guard model.coords.latitude != latitude && model.coords.longitude != longitude else { return }
         model.coords = .init(latitude: latitude, longitude: longitude)
+        await stream()
+    }
+    
+    private func update(day: Day, journal: Journal) async {
+        guard journal != model.journal[day.journal] else { return }
+        if journal.traits.isEmpty {
+            model.journal[day.journal] = nil
+        } else {
+            model.journal[day.journal] = journal
+        }
         await stream()
     }
 }

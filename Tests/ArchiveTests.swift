@@ -14,8 +14,8 @@ final class ArchiveTests: XCTestCase {
         XCTAssertTrue(archive.journal.isEmpty)
         
         archive.journal = [1 : .init()
-                            .with(trait: .period, value: 55)
-                            .with(trait: .sleep, value: 3)]
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)]
         archive = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(1, archive.journal.count)
         XCTAssertEqual(1, archive.journal.first?.key)
@@ -59,9 +59,9 @@ final class ArchiveTests: XCTestCase {
         archive.journal = [dayBerlin.journal : .init()]
         XCTAssertTrue(archive.journal[dayMexico.journal]!.traits.isEmpty)
         
-        archive.journal = [dayBerlin.journal : Journal().with(trait: .period, value: 99)]
+        archive.journal = [dayBerlin.journal : Journal().with(trait: .period, level: .top)]
         XCTAssertEqual(.period, archive.journal[dayMexico.journal]!.traits.first?.key)
-        XCTAssertEqual(99, archive.journal[dayMexico.journal]!.traits.first?.value)
+        XCTAssertEqual(.top, archive.journal[dayMexico.journal]!.traits.first?.value)
         
         Calendar.global.timeZone = timezone
     }

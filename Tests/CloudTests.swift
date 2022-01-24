@@ -25,25 +25,37 @@ final class CloudTests: XCTestCase {
     }
     
     func testTrack() async {
-        var journal = Journal()
         let day = Day(id: .now, moon: .init(), journal: 123456)
         
         var model = await cloud.model
         XCTAssertTrue(model.journal.isEmpty)
         
-        await cloud.track(day: day, journal: journal)
-        model = await cloud.model
-        XCTAssertTrue(model.journal.isEmpty)
-        
-        journal = journal.with(trait: .period, value: 5)
-        await cloud.track(day: day, journal: journal)
+        await cloud.track(day: day, trait: .period, level: .medium)
         model = await cloud.model
         XCTAssertEqual(1, model.journal.count)
         XCTAssertEqual(.period, model.journal[day.journal]?.traits.first?.key)
-        XCTAssertEqual(5, model.journal[day.journal]?.traits.first?.value)
+        XCTAssertEqual(.medium, model.journal[day.journal]?.traits.first?.value)
         
-        journal = .init()
-        await cloud.track(day: day, journal: journal)
+        await cloud.track(day: day, trait: .period, level: .low)
+        model = await cloud.model
+        XCTAssertEqual(1, model.journal.count)
+        XCTAssertEqual(1, model.journal[day.journal]?.traits.count)
+        XCTAssertEqual(.period, model.journal[day.journal]?.traits.first?.key)
+        XCTAssertEqual(.low, model.journal[day.journal]?.traits.first?.value)
+        
+        await cloud.track(day: day, trait: .sleep, level: .top)
+        model = await cloud.model
+        XCTAssertEqual(1, model.journal.count)
+        XCTAssertEqual(2, model.journal[day.journal]?.traits.count)
+        
+        await cloud.remove(day: day, trait: .period)
+        model = await cloud.model
+        XCTAssertEqual(1, model.journal.count)
+        XCTAssertEqual(1, model.journal[day.journal]?.traits.count)
+        XCTAssertEqual(.sleep, model.journal[day.journal]?.traits.first?.key)
+        XCTAssertEqual(.top, model.journal[day.journal]?.traits.first?.value)
+        
+        await cloud.remove(day: day, trait: .sleep)
         model = await cloud.model
         XCTAssertTrue(model.journal.isEmpty)
     }

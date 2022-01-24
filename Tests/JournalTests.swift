@@ -6,32 +6,24 @@ final class JournalTests: XCTestCase {
         var journal = Journal()
         XCTAssertTrue(journal.traits.isEmpty)
         
-        journal = journal.with(trait: .period, value: 5)
+        journal = journal.with(trait: .period, level: .medium)
+        XCTAssertEqual(journal, journal.with(trait: .period, level: .medium))
         XCTAssertEqual(1, journal.traits.count)
         XCTAssertEqual(.period, journal.traits.first?.key)
-        XCTAssertEqual(5, journal.traits.first?.value)
+        XCTAssertEqual(.medium, journal.traits.first?.value)
         
-        journal = journal.with(trait: .period, value: 15)
+        journal = journal.with(trait: .period, level: .top)
         XCTAssertEqual(1, journal.traits.count)
         XCTAssertEqual(.period, journal.traits.first?.key)
-        XCTAssertEqual(15, journal.traits.first?.value)
+        XCTAssertEqual(.top, journal.traits.first?.value)
         
-        journal = journal.with(trait: .sleep, value: 3)
+        journal = journal.with(trait: .sleep, level: .low)
         XCTAssertEqual(2, journal.traits.count)
-    }
-    
-    func testCap() {
-        XCTAssertEqual(5, Journal().with(trait: .period, value: 5).traits[.period])
-        XCTAssertEqual(0, Journal().with(trait: .period, value: -1).traits[.period])
-        XCTAssertEqual(0, Journal().with(trait: .period, value: -0.5).traits[.period])
-        XCTAssertEqual(100, Journal().with(trait: .period, value: 100.1).traits[.period])
-        XCTAssertEqual(100, Journal().with(trait: .period, value: 101).traits[.period])
-        XCTAssertEqual(6, Journal().with(trait: .period, value: 5.6).traits[.period])
     }
     
     func testRemove() {
         XCTAssertTrue(Journal()
-                        .with(trait: .period, value: 5)
+                        .with(trait: .period, level: .high)
                         .remove(trait: .period).traits.isEmpty)
     }
 }
