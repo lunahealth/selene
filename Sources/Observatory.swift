@@ -3,16 +3,7 @@ import Foundation
 public final class Observatory {
     private(set) var cache = [Date : Moon]()
     private var coords = Coords(latitude: 0, longitude: 0)
-    
-    public var week: [Day] {
-        Calendar
-            .global
-            .week
-            .map {
-                .init(id: $0, moon: moon(for: $0), journal: $0.journal)
-            }
-    }
-    
+
     public init() { }
     
     public func update(to other: Coords) {

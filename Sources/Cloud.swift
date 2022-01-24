@@ -14,15 +14,15 @@ extension Cloud where Output == Archive {
         }
     }
     
-    public func track(day: Day, trait: Trait, level: Level) async {
-        await update(day: day, journal: model
-                        .journal[day.journal, default: .init()]
+    public func track(journal: UInt32, trait: Trait, level: Level) async {
+        await update(day: journal, journal: model
+                        .journal[journal, default: .init()]
                         .with(trait: trait, level: level))
     }
     
-    public func remove(day: Day, trait: Trait) async {
-        await update(day: day, journal: model
-                        .journal[day.journal, default: .init()]
+    public func remove(journal: UInt32, trait: Trait) async {
+        await update(day: journal, journal: model
+                        .journal[journal, default: .init()]
                         .removing(trait: trait))
     }
     
@@ -32,12 +32,12 @@ extension Cloud where Output == Archive {
         await stream()
     }
     
-    private func update(day: Day, journal: Journal) async {
-        guard journal != model.journal[day.journal] else { return }
+    private func update(day: UInt32, journal: Journal) async {
+        guard journal != model.journal[day] else { return }
         if journal.traits.isEmpty {
-            model.journal[day.journal] = nil
+            model.journal[day] = nil
         } else {
-            model.journal[day.journal] = journal
+            model.journal[day] = journal
         }
         await stream()
     }

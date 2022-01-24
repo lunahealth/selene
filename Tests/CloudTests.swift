@@ -25,37 +25,37 @@ final class CloudTests: XCTestCase {
     }
     
     func testTrack() async {
-        let day = Day(id: .now, moon: .init(), journal: 123456)
+        let day = UInt32(123456)
         
         var model = await cloud.model
         XCTAssertTrue(model.journal.isEmpty)
         
-        await cloud.track(day: day, trait: .period, level: .medium)
+        await cloud.track(journal: day, trait: .period, level: .medium)
         model = await cloud.model
         XCTAssertEqual(1, model.journal.count)
-        XCTAssertEqual(.period, model.journal[day.journal]?.traits.first?.key)
-        XCTAssertEqual(.medium, model.journal[day.journal]?.traits.first?.value)
+        XCTAssertEqual(.period, model.journal[day]?.traits.first?.key)
+        XCTAssertEqual(.medium, model.journal[day]?.traits.first?.value)
         
-        await cloud.track(day: day, trait: .period, level: .low)
+        await cloud.track(journal: day, trait: .period, level: .low)
         model = await cloud.model
         XCTAssertEqual(1, model.journal.count)
-        XCTAssertEqual(1, model.journal[day.journal]?.traits.count)
-        XCTAssertEqual(.period, model.journal[day.journal]?.traits.first?.key)
-        XCTAssertEqual(.low, model.journal[day.journal]?.traits.first?.value)
+        XCTAssertEqual(1, model.journal[day]?.traits.count)
+        XCTAssertEqual(.period, model.journal[day]?.traits.first?.key)
+        XCTAssertEqual(.low, model.journal[day]?.traits.first?.value)
         
-        await cloud.track(day: day, trait: .sleep, level: .top)
+        await cloud.track(journal: day, trait: .sleep, level: .top)
         model = await cloud.model
         XCTAssertEqual(1, model.journal.count)
-        XCTAssertEqual(2, model.journal[day.journal]?.traits.count)
+        XCTAssertEqual(2, model.journal[day]?.traits.count)
         
-        await cloud.remove(day: day, trait: .period)
+        await cloud.remove(journal: day, trait: .period)
         model = await cloud.model
         XCTAssertEqual(1, model.journal.count)
-        XCTAssertEqual(1, model.journal[day.journal]?.traits.count)
-        XCTAssertEqual(.sleep, model.journal[day.journal]?.traits.first?.key)
-        XCTAssertEqual(.top, model.journal[day.journal]?.traits.first?.value)
+        XCTAssertEqual(1, model.journal[day]?.traits.count)
+        XCTAssertEqual(.sleep, model.journal[day]?.traits.first?.key)
+        XCTAssertEqual(.top, model.journal[day]?.traits.first?.value)
         
-        await cloud.remove(day: day, trait: .sleep)
+        await cloud.remove(journal: day, trait: .sleep)
         model = await cloud.model
         XCTAssertTrue(model.journal.isEmpty)
     }

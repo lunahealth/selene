@@ -6,6 +6,10 @@ private let secondsInADay = 86400.0
 private let flatHour = 21
 
 extension Date {
+    public var journal: UInt32 {
+        Calendar.global.journal(from: self).timestamp
+    }
+    
     var julianDay: Double {
         (timeIntervalSince1970 / secondsInADay) - 0.5 + J1970 - J2000
     }
@@ -14,9 +18,5 @@ extension Date {
         var components = Calendar.global.dateComponents([.timeZone, .year, .month, .day], from: self)
         components.hour = flatHour
         return Calendar.global.date(from: components) ?? self
-    }
-    
-    var journal: UInt32 {
-        Calendar.global.journal(from: self).timestamp
     }
 }
