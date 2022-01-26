@@ -3,7 +3,7 @@ import XCTest
 
 final class JournalTests: XCTestCase {
     func testTraits() {
-        var journal = Journal()
+        var journal = Journal(date: .now)
         XCTAssertTrue(journal.traits.isEmpty)
         
         journal = journal.with(trait: .period, level: .medium)
@@ -22,7 +22,7 @@ final class JournalTests: XCTestCase {
     }
     
     func testRemove() {
-        XCTAssertTrue(Journal()
+        XCTAssertTrue(Journal(date: .now)
                         .with(trait: .period, level: .high)
                         .removing(trait: .period).traits.isEmpty)
     }

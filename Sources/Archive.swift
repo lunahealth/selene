@@ -3,37 +3,51 @@ import Archivable
 
 public struct Archive: Arch {
     public var timestamp: UInt32
-    public internal(set) var journal: [UInt32 : Journal]
     public internal(set) var settings: Settings
     public internal(set) var coords: Coords
+    private(set) var journal: Set<Journal>
 
     public var data: Data {
         .init()
         .adding(coords)
-        .adding(UInt16(journal.count))
-        .adding(journal.flatMap {
-            Data()
-                .adding($0.key)
-                .adding($0.value)
-        })
+        .adding(size: UInt16.self, collection: journal)
         .adding(settings)
     }
     
     public init() {
         timestamp = 0
-        journal = [:]
+        journal = []
         settings = .init()
         coords = .init(latitude: 52.522399, longitude: 13.413027)
     }
     
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
-        var data = data
         self.timestamp = timestamp
+        var data = data
         coords = .init(data: &data)
-        journal = (0 ..< .init(data.number() as UInt16))
-            .reduce(into: [:]) { result, _ in
-                result[data.number()] = .init(data: &data)
-            }
+        journal = .init(data.collection(size: UInt16.self))
         settings = .init(data: &data)
+    }
+    
+    public subscript(_ date: Date) -> Journal? {
+        journal
+            .first {
+                Calendar.global.isDate($0.datestamp.date, inSameDayAs: date)
+            }
+    }
+    
+    mutating func replace(item: Journal) {
+        remove(date: item.datestamp.date)
+        journal.insert(item)
+    }
+    
+    mutating func remove(date: Date) {
+        _ = journal
+            .firstIndex {
+                Calendar.global.isDate($0.datestamp.date, inSameDayAs: date)
+            }
+            .map {
+                journal.remove(at: $0)
+            }
     }
 }
