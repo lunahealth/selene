@@ -1,4 +1,5 @@
 import Foundation
+import Dater
 import Archivable
 
 public struct Archive: Arch {
@@ -7,6 +8,17 @@ public struct Archive: Arch {
     public internal(set) var coords: Coords
     private(set) var journal: Set<Journal>
 
+    public var calendar: [Days<Journal>] {
+        let journal = journal.reduce(into: [:]) {
+            $0[$1.datestamp.date] = $1
+        }
+        
+        return Array(journal.keys)
+            .calendar { date in
+                journal[date, default: .init(date: date)]
+            }
+    }
+    
     public var data: Data {
         .init()
         .adding(coords)
