@@ -33,7 +33,7 @@ extension Cloud where Output == Archive {
     private func update(journal: Journal) async {
         guard journal != model[.now] else { return }
         if journal.traits.isEmpty {
-            model.remove(date: journal.datestamp.date)
+            model.remove(date: journal.date)
         } else {
             model.replace(item: journal)
         }

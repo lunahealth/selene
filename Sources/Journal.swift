@@ -3,7 +3,12 @@ import Archivable
 
 public struct Journal: Storable, Hashable {
     public let traits: [Trait : Level]
-    let datestamp: Datestamp
+    
+    public var date: Date {
+        datestamp.date
+    }
+    
+    private let datestamp: Datestamp
     
     public var data: Data {
         .init()

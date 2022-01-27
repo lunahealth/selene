@@ -10,7 +10,7 @@ public struct Archive: Arch {
 
     public var calendar: [Days<Journal>] {
         let journal = journal.reduce(into: [:]) {
-            $0[$1.datestamp.date] = $1
+            $0[$1.date] = $1
         }
         
         return Array(journal.keys)
@@ -44,19 +44,19 @@ public struct Archive: Arch {
     public subscript(_ date: Date) -> Journal? {
         journal
             .first {
-                Calendar.global.isDate($0.datestamp.date, inSameDayAs: date)
+                Calendar.global.isDate($0.date, inSameDayAs: date)
             }
     }
     
     mutating func replace(item: Journal) {
-        remove(date: item.datestamp.date)
+        remove(date: item.date)
         journal.insert(item)
     }
     
     mutating func remove(date: Date) {
         _ = journal
             .firstIndex {
-                Calendar.global.isDate($0.datestamp.date, inSameDayAs: date)
+                Calendar.global.isDate($0.date, inSameDayAs: date)
             }
             .map {
                 journal.remove(at: $0)

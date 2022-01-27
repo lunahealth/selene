@@ -23,8 +23,8 @@ final class ArchiveTests: XCTestCase {
         XCTAssertEqual(2, archive.journal.first?.traits.count)
         XCTAssertEqual(.high, archive.journal.first?.traits.first { $0.key == .period }?.value)
         XCTAssertEqual(.low, archive.journal.first?.traits.first { $0.key == .sleep }?.value)
-        XCTAssertEqual(date.timestamp, archive.journal.first?.datestamp.date.timestamp)
-        XCTAssertTrue(Calendar.global.isDate(archive.journal.first!.datestamp.date, inSameDayAs: date))
+        XCTAssertEqual(date.timestamp, archive.journal.first?.date.timestamp)
+        XCTAssertTrue(Calendar.global.isDate(archive.journal.first!.date, inSameDayAs: date))
         
         archive.replace(item: .init(date: date))
         archive.replace(item: .init(date: .now))
