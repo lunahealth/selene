@@ -15,7 +15,7 @@ public struct Archive: Arch {
         
         return Array(journal.keys)
             .calendar { date in
-                journal[date, default: .init(date: date)]
+                self[date] ?? .init(date: date)
             }
     }
     

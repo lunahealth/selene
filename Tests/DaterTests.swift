@@ -11,7 +11,7 @@ final class DaterTests: XCTestCase {
     
     func testJournals() {
         let date1 = Calendar.global.date(from: .init(year: 2021, month: 1, day: 3))!
-        let date2 = Calendar.global.date(from: .init(year: 2021, month: 1, day: 7))!
+        let date2 = Calendar.global.date(from: .init(year: 2021, month: 1, day: 7, hour: 2))!
         archive.replace(item: .init(date: date1))
         archive.replace(item: .init(date: date2).with(trait: .period, level: .high))
         let month = archive
