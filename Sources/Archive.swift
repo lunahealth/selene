@@ -19,10 +19,6 @@ public struct Archive: Arch {
             }
     }
     
-    public var analysis: [Trait : [Moon.Phase : Level]] {
-        [:]
-    }
-    
     public var data: Data {
         .init()
         .adding(coords)
