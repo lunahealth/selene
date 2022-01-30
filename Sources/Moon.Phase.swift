@@ -1,5 +1,5 @@
 extension Moon {
-    public enum Phase {
+    public enum Phase: CaseIterable {
         case
         new,
         waxingCrescent,
