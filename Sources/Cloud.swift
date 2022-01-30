@@ -25,22 +25,38 @@ extension Cloud where Output == Archive {
     }
     
     public func analysis(phase: (Date) -> Moon.Phase) -> [Trait : [Moon.Phase : Level]] {
-        var result: [Trait : [Moon.Phase : Level]] = model
+        var result: [Trait : [Moon.Phase : [Level : Int]]] = model
             .settings
             .traits
             .reduce(into: [:]) {
                 $0[$1] = [:]
             }
+        
         model
             .journal
             .forEach { journal in
                 journal
                     .traits
                     .forEach { trait, level in
-                        result[trait]?[phase(journal.date)] = level
+                        result[trait]?[phase(journal.date), default: [:]][level, default: 0] += 1
                     }
             }
+        
         return result
+            .reduce(into: [:]) { result, item in
+                result[item.key] = item
+                    .value
+                    .reduce(into: [:]) { subresult, subitem in
+                        subresult[subitem.key] = subitem
+                            .value
+                            .max { a, b in
+                                a.value == b.value
+                                    ? a.key.rawValue < b.key.rawValue
+                                    : a.value < b.value
+                            }!
+                            .key
+                    }
+            }
     }
     
     public func coords(latitude: Double, longitude: Double) async {
