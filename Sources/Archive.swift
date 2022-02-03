@@ -62,4 +62,17 @@ public struct Archive: Arch {
                 journal.remove(at: $0)
             }
     }
+    
+    mutating func clear() {
+        journal = []
+    }
+    
+    mutating func remove(trait: Trait) {
+        journal = journal
+            .reduce(into: []) {
+                let journal = $1.removing(trait: trait)
+                guard !journal.traits.isEmpty else { return }
+                $0.insert(journal)
+            }
+    }
 }

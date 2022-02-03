@@ -64,4 +64,42 @@ final class CloudTests: XCTestCase {
         XCTAssertEqual(3.4560, coords.latitude)
         XCTAssertEqual(1.2345, coords.longitude)
     }
+    
+    func testDelete() async {
+        await cloud.track(trait: .period, level: .medium)
+        await cloud.track(trait: .exercise, level: .high)
+        await cloud.delete(trait: .period)
+        let model = await cloud.model
+        XCTAssertEqual(1, model.journal.count)
+        XCTAssertEqual(.exercise, model[.now]?.traits.first?.key)
+        XCTAssertEqual(.high, model[.now]?.traits.first?.value)
+    }
+    
+    func testDeleteFromPast() async {
+        let date = Calendar.global.date(byAdding: .day, value: -5, to: .now)!
+        await cloud.update(journal: .init(date: date).with(trait: .period, level: .medium))
+        await cloud.delete(trait: .period)
+        let model = await cloud.model
+        XCTAssertTrue(model.journal.isEmpty)
+        XCTAssertNil(model[.now]?.traits.first?.key)
+    }
+    
+    func testDeleteOnlySelected() async {
+        let date = Calendar.global.date(byAdding: .day, value: -5, to: .now)!
+        await cloud.update(journal: .init(date: date).with(trait: .period, level: .medium))
+        await cloud.track(trait: .exercise, level: .high)
+        await cloud.delete(trait: .period)
+        let model = await cloud.model
+        XCTAssertEqual(1, model.journal.count)
+        XCTAssertNotNil(model[.now]?.traits.first?.key)
+    }
+    
+    func testDeleteAll() async {
+        let date = Calendar.global.date(byAdding: .day, value: -5, to: .now)!
+        await cloud.update(journal: .init(date: date).with(trait: .period, level: .medium))
+        await cloud.track(trait: .exercise, level: .high)
+        await cloud.delete()
+        let model = await cloud.model
+        XCTAssertTrue(model.journal.isEmpty)
+    }
 }

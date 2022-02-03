@@ -19,6 +19,16 @@ extension Cloud where Output == Archive {
         await update(journal: journal.with(trait: trait, level: level))
     }
     
+    public func delete() async {
+        model.clear()
+        await stream()
+    }
+    
+    public func delete(trait: Trait) async {
+        model.remove(trait: trait)
+        await stream()
+    }
+    
     public func remove(trait: Trait) async {
         let journal = model[.now] ?? .init(date: .now)
         await update(journal: journal.removing(trait: trait))
@@ -66,7 +76,7 @@ extension Cloud where Output == Archive {
     }
     
     func update(journal: Journal) async {
-        guard journal != model[.now] else { return }
+        guard journal != model[journal.date] else { return }
         if journal.traits.isEmpty {
             model.remove(date: journal.date)
         } else {
