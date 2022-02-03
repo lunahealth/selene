@@ -13,7 +13,7 @@ public struct Archive: Arch {
             $0[$1.date] = $1
         }
         
-        return Array(journal.keys)
+        return Array(journal.keys.sorted())
             .calendar { date in
                 self[date] ?? .init(date: date)
             }

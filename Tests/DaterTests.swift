@@ -29,4 +29,18 @@ final class DaterTests: XCTestCase {
         XCTAssertEqual(.period, month[6].content.traits.first?.key)
         XCTAssertEqual(.high, month[6].content.traits.first?.value)
     }
+    
+    func testMultipleMonths() {
+        (0 ..< 10)
+            .forEach { index in
+                archive.replace(item: .init(date: Calendar.global.date(byAdding: .month, value: -(index), to: .now)!)
+                                    .with(trait: .period, level: .high))
+            }
+        
+        
+        (0 ..< 10)
+            .forEach { _ in
+                XCTAssertEqual(10, archive.calendar.count)
+            }
+    }
 }
