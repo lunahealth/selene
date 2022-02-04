@@ -5,7 +5,8 @@ public enum Defaults: String {
     rated,
     created,
     premium,
-    location
+    location,
+    coords
 
     public static var action: Action {
         if let created = wasCreated {
@@ -37,10 +38,24 @@ public enum Defaults: String {
         set { self[.location] = newValue }
     }
     
+    public static var coordinates: Coords? {
+        get {
+            share.data(forKey: Self.coords.rawValue)?.prototype()
+        }
+        set {
+            newValue
+                .map {
+                    share.setValue($0.data, forKey: Self.coords.rawValue)
+                }
+        }
+    }
+    
     static var wasCreated: Date? {
         get { self[.created] as? Date }
         set { self[.created] = newValue }
     }
+    
+    private static let share = UserDefaults(suiteName: "group.moonhealth.share")!
     
     private static subscript(_ key: Self) -> Any? {
         get { UserDefaults.standard.object(forKey: key.rawValue) }

@@ -6,12 +6,16 @@ final class DefaultsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: Defaults.rated.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.created.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.premium.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.location.rawValue)
+        UserDefaults(suiteName: "group.moonhealth.share")!.removeObject(forKey: Defaults.coords.rawValue)
     }
     
     override func tearDown() {
         UserDefaults.standard.removeObject(forKey: Defaults.rated.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.created.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.premium.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.location.rawValue)
+        UserDefaults(suiteName: "group.moonhealth.share")!.removeObject(forKey: Defaults.coords.rawValue)
     }
     
     func testFirstTime() {
@@ -50,5 +54,11 @@ final class DefaultsTests: XCTestCase {
         UserDefaults.standard.setValue(true, forKey: Defaults.premium.rawValue)
         UserDefaults.standard.setValue(true, forKey: Defaults.rated.rawValue)
         XCTAssertEqual(.none, Defaults.action)
+    }
+    
+    func testCoordinates() {
+        XCTAssertNil(Defaults.coordinates)
+        Defaults.coordinates = .init(latitude: 1, longitude: 2)
+        XCTAssertEqual(.init(latitude: 1, longitude: 2), Defaults.coordinates)
     }
 }
