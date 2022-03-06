@@ -34,7 +34,7 @@ extension Cloud where Output == Archive {
         await update(journal: journal.removing(trait: trait))
     }
     
-    public func analysis(phase: (Date) -> Moon.Phase) -> [Trait : [Moon.Phase : Level]] {
+    public func analysis(since: Analysing, phase: (Date) -> Moon.Phase) -> [Trait : [Moon.Phase : Level]] {
         var result: [Trait : [Moon.Phase : [Level : Int]]] = model
             .settings
             .traits
@@ -42,8 +42,13 @@ extension Cloud where Output == Archive {
                 $0[$1] = [:]
             }
         
+        let since = since.date
+        
         model
             .journal
+            .filter {
+                $0.date > since
+            }
             .forEach { journal in
                 journal
                     .traits
