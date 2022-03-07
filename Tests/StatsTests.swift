@@ -52,13 +52,13 @@ final class StatsTests: XCTestCase {
         
         let stats = await cloud.stats(trait: .period)?.distribution
         
-        XCTAssertEqual(.medium, stats?[0].0)
-        XCTAssertEqual(0.4, stats?[0].1)
-        XCTAssertEqual(.top, stats?[1].0)
-        XCTAssertEqual(0.2, stats?[1].1)
-        XCTAssertEqual(.high, stats?[2].0)
-        XCTAssertEqual(0.2, stats?[2].1)
-        XCTAssertEqual(.low, stats?[3].0)
-        XCTAssertEqual(0.2, stats?[3].1)
+        XCTAssertEqual(.medium, stats?[0].level)
+        XCTAssertEqual(0.4, stats?[0].percent)
+        XCTAssertEqual(.top, stats?[1].level)
+        XCTAssertEqual(0.2, stats?[1].percent)
+        XCTAssertEqual(.high, stats?[2].level)
+        XCTAssertEqual(0.2, stats?[2].percent)
+        XCTAssertEqual(.low, stats?[3].level)
+        XCTAssertEqual(0.2, stats?[3].percent)
     }
 }

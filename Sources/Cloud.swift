@@ -103,7 +103,7 @@ extension Cloud where Output == Archive {
                             : left.value > right.value
                         }
                         .map {
-                            ($0.key, $0.value / .init(values.count))
+                            .init(level: $0.key, percent: $0.value / .init(values.count))
                         })
     }
     
