@@ -2,7 +2,7 @@ import XCTest
 @testable import Archivable
 @testable import Selene
 
-final class AnalysisTests: XCTestCase {
+final class StatsTests: XCTestCase {
     private var cloud: Cloud<Archive>!
     
     override func setUp() {
@@ -92,30 +92,6 @@ final class AnalysisTests: XCTestCase {
         
         XCTAssertNil(analysis[.period]?[.firstQuarter])
         XCTAssertNil(analysis[.exercise]?[.full])
-        XCTAssertEqual(.bottom, analysis[.sleep]?[.waningCrescent])
-    }
-    
-    func testFortnight() async {
-        let date1 = Calendar.global.date(byAdding: .day, value: -20, to: .now)!
-        let date2 = Calendar.global.date(byAdding: .day, value: -10, to: .now)!
-        let date3 = Calendar.global.date(byAdding: .day, value: -3, to: .now)!
-        
-        let phases = [
-            date1.timestamp : Moon.Phase.firstQuarter,
-            date2.timestamp : Moon.Phase.full,
-            date3.timestamp : Moon.Phase.waningCrescent]
-        
-        await cloud.toggle(trait: .period, mode: true)
-        await cloud.toggle(trait: .exercise, mode: true)
-        await cloud.toggle(trait: .sleep, mode: true)
-        await cloud.update(journal: .init(date: date1).with(trait: .period, level: .low))
-        await cloud.update(journal: .init(date: date2).with(trait: .exercise, level: .low))
-        await cloud.update(journal: .init(date: date3).with(trait: .sleep, level: .bottom))
-        
-        let analysis = await cloud.analysis(since: .fortnight) { phases[$0.timestamp]! }
-        
-        XCTAssertNil(analysis[.period]?[.firstQuarter])
-        XCTAssertEqual(.low, analysis[.exercise]?[.full])
         XCTAssertEqual(.bottom, analysis[.sleep]?[.waningCrescent])
     }
     
