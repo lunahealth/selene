@@ -77,6 +77,9 @@ extension Cloud where Output == Archive {
     public func stats(trait: Trait) -> Stats? {
         let values = model
             .journal
+            .sorted {
+                $0.date < $1.date
+            }
             .flatMap {
                 $0
                     .traits

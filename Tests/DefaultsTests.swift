@@ -7,6 +7,9 @@ final class DefaultsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: Defaults.created.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.premium.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.location.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.coords.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.since.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.trait.rawValue)
         UserDefaults(suiteName: "group.moonhealth.share")!.removeObject(forKey: Defaults.coords.rawValue)
     }
     
@@ -15,6 +18,9 @@ final class DefaultsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: Defaults.created.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.premium.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.location.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.coords.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.since.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.trait.rawValue)
         UserDefaults(suiteName: "group.moonhealth.share")!.removeObject(forKey: Defaults.coords.rawValue)
     }
     
@@ -60,5 +66,17 @@ final class DefaultsTests: XCTestCase {
         XCTAssertNil(Defaults.coordinates)
         Defaults.coordinates = .init(latitude: 1, longitude: 2)
         XCTAssertEqual(.init(latitude: 1, longitude: 2), Defaults.coordinates)
+    }
+    
+    func testSince() {
+        XCTAssertEqual(.all, Defaults.currentSince)
+        Defaults.currentSince = .month
+        XCTAssertEqual(.month, Defaults.currentSince)
+    }
+    
+    func testTrait() {
+        XCTAssertNil(Defaults.currentTrait)
+        Defaults.currentTrait = .period
+        XCTAssertEqual(.period, Defaults.currentTrait)
     }
 }

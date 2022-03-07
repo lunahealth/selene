@@ -6,7 +6,9 @@ public enum Defaults: String {
     created,
     premium,
     location,
-    coords
+    coords,
+    since,
+    trait
 
     public static var action: Action {
         if let created = wasCreated {
@@ -36,6 +38,16 @@ public enum Defaults: String {
     public static var hasLocated: Bool {
         get { self[.location] as? Bool ?? false }
         set { self[.location] = newValue }
+    }
+    
+    public static var currentSince: Analysing {
+        get { self[.since].flatMap { $0 as? UInt8 }.flatMap(Analysing.init(rawValue:)) ?? .all }
+        set { self[.since] = newValue.rawValue }
+    }
+    
+    public static var currentTrait: Trait? {
+        get { self[.trait].flatMap { $0 as? UInt8 }.flatMap(Trait.init(rawValue:)) }
+        set { self[.trait] = newValue?.rawValue }
     }
     
     public static var coordinates: Coords? {
