@@ -75,7 +75,33 @@ extension Cloud where Output == Archive {
     }
     
     public func stats(trait: Trait) -> Stats? {
-        nil
+        let values = model
+            .journal
+            .flatMap {
+                $0
+                    .traits
+                    .filter {
+                        $0.key == trait
+                    }
+                    .map(\.value)
+            }
+        
+        guard !values.isEmpty else { return nil }
+        
+        return .init(recent: values.last!,
+                     count: values.count,
+                     distribution: values
+                        .reduce(into: [Level : Double]()) {
+                            $0[$1, default: 0] += 1
+                        }
+                        .sorted { left, right in
+                            left.value == right.value
+                            ? left.key.rawValue > right.key.rawValue
+                            : left.value > right.value
+                        }
+                        .map {
+                            ($0.key, $0.value / .init(values.count))
+                        })
     }
     
     public func coords(latitude: Double, longitude: Double) async {

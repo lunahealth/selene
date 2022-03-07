@@ -10,98 +10,55 @@ final class StatsTests: XCTestCase {
     }
     
     func testEmpty() async {
-        var analysis = await cloud.analysis(since: .all) { _ in fatalError() }
-        XCTAssertTrue(analysis.isEmpty)
-        
-        await cloud.toggle(trait: .period, mode: true)
-        await cloud.toggle(trait: .sleep, mode: true)
-        
-        analysis = await cloud.analysis(since: .all) { _ in fatalError() }
-        XCTAssertNotNil(analysis[.period])
-        XCTAssertNotNil(analysis[.sleep])
-        XCTAssertTrue(analysis[.period]?.isEmpty ?? false)
-        XCTAssertTrue(analysis[.sleep]?.isEmpty ?? false)
+        let stats = await cloud.stats(trait: .sleep)
+        XCTAssertNil(stats)
     }
     
-    func testSimple() async {
-        await cloud.toggle(trait: .period, mode: true)
-        await cloud.track(trait: .period, level: .medium)
-        
-        let analysis = await cloud.analysis(since: .all) { _ in .firstQuarter }
-        
-        XCTAssertEqual(.medium, analysis[.period]?[.firstQuarter])
-    }
-    
-    func testTracked() async {
-        let date1 = Calendar.global.date(byAdding: .day, value: -1, to: .now)!
-        let date2 = Calendar.global.date(byAdding: .day, value: -2, to: .now)!
-        let date3 = Calendar.global.date(byAdding: .day, value: -3, to: .now)!
-        let date4 = Calendar.global.date(byAdding: .day, value: -4, to: .now)!
-        let date5 = Calendar.global.date(byAdding: .day, value: -5, to: .now)!
-        let date6 = Calendar.global.date(byAdding: .day, value: -6, to: .now)!
-        
-        let phases = [
-            date1.timestamp : Moon.Phase.firstQuarter,
-            date2.timestamp : Moon.Phase.full,
-            date3.timestamp : Moon.Phase.waningCrescent,
-            date4.timestamp : Moon.Phase.firstQuarter,
-            date5.timestamp : Moon.Phase.firstQuarter,
-            date6.timestamp : Moon.Phase.firstQuarter,]
-        
-        await cloud.toggle(trait: .period, mode: true)
-        await cloud.toggle(trait: .exercise, mode: true)
-        await cloud.toggle(trait: .sleep, mode: true)
-        await cloud.update(journal: .init(date: date1).with(trait: .period, level: .low).with(trait: .exercise, level: .top))
-        await cloud.update(journal: .init(date: date2).with(trait: .sleep, level: .low))
-        await cloud.update(journal: .init(date: date3).with(trait: .period, level: .bottom))
-        await cloud.update(journal: .init(date: date4).with(trait: .period, level: .bottom))
-        
-        var analysis = await cloud.analysis(since: .all) { phases[$0.timestamp]! }
-        
-        XCTAssertEqual(.low, analysis[.period]?[.firstQuarter])
-        XCTAssertEqual(.top, analysis[.exercise]?[.firstQuarter])
-        XCTAssertEqual(.low, analysis[.sleep]?[.full])
-        XCTAssertEqual(.bottom, analysis[.period]?[.waningCrescent])
-        
-        await cloud.update(journal: .init(date: date5).with(trait: .period, level: .low))
-        await cloud.update(journal: .init(date: date6).with(trait: .period, level: .medium))
-        
-        analysis = await cloud.analysis(since: .all) { phases[$0.timestamp]! }
-        
-        XCTAssertEqual(.low, analysis[.period]?[.firstQuarter])
-    }
-    
-    func testLastMonth() async {
-        let date1 = Calendar.global.date(byAdding: .month, value: -2, to: .now)!
-        let date2 = Calendar.global.date(byAdding: .month, value: -3, to: .now)!
-        let date3 = Calendar.global.date(byAdding: .day, value: -3, to: .now)!
-        
-        let phases = [
-            date1.timestamp : Moon.Phase.firstQuarter,
-            date2.timestamp : Moon.Phase.full,
-            date3.timestamp : Moon.Phase.waningCrescent]
-        
-        await cloud.toggle(trait: .period, mode: true)
-        await cloud.toggle(trait: .exercise, mode: true)
-        await cloud.toggle(trait: .sleep, mode: true)
+    func testCount() async {
+        let date1 = Calendar.global.date(byAdding: .day, value: -200, to: .now)!
+        let date2 = Calendar.global.date(byAdding: .day, value: -1, to: .now)!
         await cloud.update(journal: .init(date: date1).with(trait: .period, level: .low))
-        await cloud.update(journal: .init(date: date2).with(trait: .exercise, level: .low))
-        await cloud.update(journal: .init(date: date3).with(trait: .sleep, level: .bottom))
+        await cloud.update(journal: .init(date: date2).with(trait: .period, level: .low))
         
-        let analysis = await cloud.analysis(since: .month) { phases[$0.timestamp]! }
+        let stats = await cloud.stats(trait: .period)
         
-        XCTAssertNil(analysis[.period]?[.firstQuarter])
-        XCTAssertNil(analysis[.exercise]?[.full])
-        XCTAssertEqual(.bottom, analysis[.sleep]?[.waningCrescent])
+        XCTAssertEqual(2, stats?.count)
     }
     
-    func testIgnoreNotActive() async {
-        await cloud.toggle(trait: .sleep, mode: true)
-        await cloud.track(trait: .period, level: .medium)
+    func testRecent() async {
+        let date1 = Calendar.global.date(byAdding: .day, value: -200, to: .now)!
+        let date2 = Calendar.global.date(byAdding: .day, value: -1, to: .now)!
+        await cloud.update(journal: .init(date: date1).with(trait: .period, level: .low))
+        await cloud.update(journal: .init(date: date2).with(trait: .period, level: .medium))
+        await cloud.track(trait: .period, level: .high)
         
-        let analysis = await cloud.analysis(since: .all) { _ in .firstQuarter }
+        let stats = await cloud.stats(trait: .period)
         
-        XCTAssertTrue(analysis[.sleep]?.isEmpty ?? false)
-        XCTAssertNil(analysis[.period])
+        XCTAssertEqual(.high, stats?.recent)
+    }
+    
+    func testDistribution() async {
+        let date1 = Calendar.global.date(byAdding: .day, value: -200, to: .now)!
+        let date2 = Calendar.global.date(byAdding: .day, value: -10, to: .now)!
+        let date3 = Calendar.global.date(byAdding: .day, value: -9, to: .now)!
+        let date4 = Calendar.global.date(byAdding: .day, value: -8, to: .now)!
+        let date5 = Calendar.global.date(byAdding: .day, value: -7, to: .now)!
+        
+        await cloud.update(journal: .init(date: date1).with(trait: .period, level: .top))
+        await cloud.update(journal: .init(date: date2).with(trait: .period, level: .medium))
+        await cloud.update(journal: .init(date: date3).with(trait: .period, level: .medium))
+        await cloud.update(journal: .init(date: date4).with(trait: .period, level: .low))
+        await cloud.update(journal: .init(date: date5).with(trait: .period, level: .high))
+        
+        let stats = await cloud.stats(trait: .period)?.distribution
+        
+        XCTAssertEqual(.medium, stats?[0].0)
+        XCTAssertEqual(0.4, stats?[0].1)
+        XCTAssertEqual(.top, stats?[1].0)
+        XCTAssertEqual(0.2, stats?[1].1)
+        XCTAssertEqual(.high, stats?[2].0)
+        XCTAssertEqual(0.2, stats?[2].1)
+        XCTAssertEqual(.low, stats?[3].0)
+        XCTAssertEqual(0.2, stats?[3].1)
     }
 }
