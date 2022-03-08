@@ -1,5 +1,4 @@
 public struct Stats: Equatable {    
-    public let recent: Level
-    public let count: Int
-    public let distribution: [Item]
+    public let level: Level
+    public let percent: Double
 }
