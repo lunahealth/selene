@@ -74,9 +74,14 @@ extension Cloud where Output == Archive {
             }
     }
     
-    public func stats(trait: Trait) -> [Stats] {
+    public func stats(since: Analysing, trait: Trait) -> [Stats] {
+        let since = since.date
+        
         let values = model
             .journal
+            .filter {
+                $0.date > since
+            }
             .sorted {
                 $0.date < $1.date
             }
