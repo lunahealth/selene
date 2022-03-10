@@ -8,21 +8,22 @@ private let radius = 60.0
 public struct Wheel: Navigator {
     public let origin: CGPoint
     let radians: Double
+    let side: Double
     private let date: Date
-    private let side: Double
     private let center: CGPoint
     
     public init(date: Date,
                 moon: Moon,
                 correction: Double,
                 size: CGSize,
-                padding: Double) {
+                padding: Double,
+                maxWidth: CGFloat) {
         
         radians = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1) + correction
         
         let width_2 = size.width / 2
         let height_2 = size.height / 2
-        side = min(width_2, height_2) - padding
+        side = min(min(width_2, height_2), maxWidth / 2) - padding
         center = .init(x: width_2, y: height_2)
         origin = Self.point(for: radians, center: center, side: side)
         
