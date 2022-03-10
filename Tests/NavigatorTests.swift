@@ -104,11 +104,23 @@ final class NavigatorTests: XCTestCase {
         
         XCTAssertEqual(.init(x: 862.6871855061438,
                              y: 844.1772878468769),
-                       wheel.approach(from: .init(x: 1000, y: 1000)))
+                       wheel.approach(from: wheel.pointer(for: wheel.radians(for: .init(x: 1000, y: 1000)))))
         
         XCTAssertEqual(.init(x: 308.65828381745513,
                              y: 961.9397662556433),
-                       wheel.approach(from: .init(x: 0, y: 1000)))
+                       wheel.approach(from: wheel.pointer(for: wheel.radians(for: .init(x: 0, y: 1000)))))
+    }
+    
+    func testApproachFromDifferent() {
+        let wheel = Wheel(date: Calendar.global.date(from: .init(year: 2022))!,
+                          moon: .init(inclination: .pi, apparentAngle: 1),
+                          correction: 0,
+                          size: .init(width: 1000, height: 1000),
+                          padding: 0, maxWidth: 1000)
+        
+        XCTAssertEqual(.init(x: 50,
+                             y: 24.999999999999993),
+                       wheel.approach(from: .zero))
     }
     
     func testTrack() {

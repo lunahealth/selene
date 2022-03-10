@@ -6,7 +6,7 @@ private let cycleRadians = .pi2 / cycle
 private let radius = 60.0
 
 public struct Wheel: Navigator {
-    public let origin: CGPoint
+    public private(set) var origin = CGPoint.zero
     let radians: Double
     let side: Double
     private let date: Date
@@ -25,9 +25,8 @@ public struct Wheel: Navigator {
         let height_2 = size.height / 2
         side = min(min(width_2, height_2), maxWidth / 2) - padding
         center = .init(x: width_2, y: height_2)
-        origin = Self.point(for: radians, center: center, side: side)
-        
         self.date = date
+        origin = pointer(for: radians)
     }
     
     public func move(point: CGPoint) -> Date? {
@@ -39,17 +38,21 @@ public struct Wheel: Navigator {
     
     public func approach(from point: CGPoint) -> CGPoint {
         let new = radians(for: point)
-        let delta = delta(for: new)
-        
-        if abs(delta) > 0.005 {
-            return Self.point(for: new + delta / (abs(delta) > .pi
-                                                  ? -2
-                                                  : abs(delta) > .pi_2
-                                                    ? -6
-                                                    : -30), center: center, side: side)
+        if pointer(for: new) == point {
+            let delta = delta(for: new)
+            
+            if abs(delta) > 0.005 {
+                return pointer(for: new + delta / (abs(delta) > .pi
+                                                      ? -2
+                                                      : abs(delta) > .pi_2
+                                                        ? -6
+                                                        : -30))
+            }
+            
+            return origin
+        } else {
+            return aproximate(from: point)
         }
-        
-        return origin
     }
     
     func accept(point: CGPoint) -> Bool {
@@ -64,20 +67,7 @@ public struct Wheel: Navigator {
         Calendar.global.date(byAdding: .day, value: .init(round(radians / cycleRadians)), to: date) ?? date
     }
     
-    private func delta(for rads: Double) -> Double {
-        var delta = rads - radians
-        if abs(delta) > .pi {
-            delta += .pi2
-        }
-        return delta
-    }
-    
-    private static func point(for radians: Double, center: CGPoint, side: Double) -> CGPoint {
-        let point = CGPoint(x: cos(radians), y: sin(radians))
-        return .init(x: center.x + side * point.x, y: center.y + side * point.y)
-    }
-    
-    private func radians(for point: CGPoint) -> Double {
+    func radians(for point: CGPoint) -> Double {
         let originX = point.x - center.x
         let originY = center.y - point.y
         var position = atan2(originX, originY) - .pi_2
@@ -87,5 +77,18 @@ public struct Wheel: Navigator {
         }
         
         return position
+    }
+    
+    func pointer(for radians: Double) -> CGPoint {
+        let point = CGPoint(x: cos(radians), y: sin(radians))
+        return .init(x: center.x + side * point.x, y: center.y + side * point.y)
+    }
+    
+    private func delta(for rads: Double) -> Double {
+        var delta = rads - radians
+        if abs(delta) > .pi {
+            delta += .pi2
+        }
+        return delta
     }
 }
