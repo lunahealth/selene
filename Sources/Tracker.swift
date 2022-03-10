@@ -2,7 +2,7 @@ import Foundation
 import CoreGraphics
 
 public struct Tracker: Navigator {
-    public let origin = CGPoint(x: 50, y: 50)
+    public let origin = CGPoint(x: 80, y: 80)
     
     public init() { }
     
