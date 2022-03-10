@@ -110,12 +110,12 @@ final class NavigatorTests: XCTestCase {
                              y: 50),
                        wheel.approach(from: .init(x: 50, y: 50)))
         
-        XCTAssertEqual(.init(x: 35,
-                             y: 35),
+        XCTAssertEqual(.init(x: -282.5,
+                             y: -282.5),
                        wheel.approach(from: .init(x: -300, y: -300)))
         
-        XCTAssertEqual(.init(x: -25,
-                             y: -25),
+        XCTAssertEqual(.init(x: 287.5,
+                             y: 287.5),
                        wheel.approach(from: .init(x: 300, y: 300)))
     }
 }
