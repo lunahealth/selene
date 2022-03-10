@@ -1,7 +1,7 @@
 import XCTest
 @testable import Selene
 
-final class WheelTests: XCTestCase {
+final class NavigatorTests: XCTestCase {
     func testRadians() {
         var moon = Moon(inclination: .pi, apparentAngle: 1)
         
@@ -101,5 +101,21 @@ final class WheelTests: XCTestCase {
         XCTAssertEqual(.init(x: 308.65828381745513,
                              y: 961.9397662556433),
                        wheel.approach(from: .init(x: 0, y: 1000)))
+    }
+    
+    func testTrack() {
+        let wheel = Tracker()
+        
+        XCTAssertEqual(.init(x: 50,
+                             y: 50),
+                       wheel.approach(from: .init(x: 50, y: 50)))
+        
+        XCTAssertEqual(.init(x: 35,
+                             y: 35),
+                       wheel.approach(from: .init(x: -300, y: -300)))
+        
+        XCTAssertEqual(.init(x: -25,
+                             y: -25),
+                       wheel.approach(from: .init(x: 300, y: 300)))
     }
 }

@@ -5,14 +5,19 @@ private let cycle = 29.53
 private let cycleRadians = .pi2 / cycle
 private let radius = 60.0
 
-public struct Wheel: Equatable {
-    public let radians: Double
+public struct Wheel: Navigator {
     public let origin: CGPoint
+    let radians: Double
     private let date: Date
     private let side: Double
     private let center: CGPoint
     
-    public init(date: Date, moon: Moon, correction: Double, size: CGSize, padding: Double) {
+    public init(date: Date,
+                moon: Moon,
+                correction: Double,
+                size: CGSize,
+                padding: Double) {
+        
         radians = .pi + moon.inclination * (moon.apparentAngle < 0 ? -1 : 1) + correction
         
         let width_2 = size.width / 2
