@@ -14,9 +14,8 @@ extension Navigator {
     }
     
     func aproximate(from point: CGPoint) -> CGPoint {
-        let deltaX = origin.x - point.x
-        let deltaY = origin.y - point.y
-        return .init(x: abs(deltaX) > 1 ? point.x + (deltaX / 20) : origin.x,
-                     y: abs(deltaY) > 1 ? point.y + (deltaY / 20) : origin.y)
+        let delta = origin.delta(other: point)
+        return .init(x: abs(delta.x) > 1 ? point.x + (delta.x / 20) : origin.x,
+                     y: abs(delta.y) > 1 ? point.y + (delta.y / 20) : origin.y)
     }
 }

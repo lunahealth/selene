@@ -123,6 +123,19 @@ final class NavigatorTests: XCTestCase {
                        wheel.approach(from: .zero))
     }
     
+    func testApproachFromDifferentSmallDelta() {
+        let wheel = Wheel(date: Calendar.global.date(from: .init(year: 2022))!,
+                          moon: .init(inclination: .pi, apparentAngle: 1),
+                          correction: 0,
+                          size: .init(width: 1000, height: 1000),
+                          padding: 0, maxWidth: 1000)
+        var point = wheel.pointer(for: wheel.radians(for: .zero))
+        point.x += 10
+        XCTAssertEqual(.init(x: 314.193549867298,
+                             y: 35.80611476551769),
+                       wheel.approach(from: point))
+    }
+    
     func testTrack() {
         let wheel = Tracker()
         
