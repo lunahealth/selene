@@ -10,6 +10,8 @@ final class DefaultsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: Defaults.coords.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.since.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.trait.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.haptics.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.sounds.rawValue)
         UserDefaults(suiteName: "group.moonhealth.share")!.removeObject(forKey: Defaults.coords.rawValue)
     }
     
@@ -21,6 +23,8 @@ final class DefaultsTests: XCTestCase {
         UserDefaults.standard.removeObject(forKey: Defaults.coords.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.since.rawValue)
         UserDefaults.standard.removeObject(forKey: Defaults.trait.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.haptics.rawValue)
+        UserDefaults.standard.removeObject(forKey: Defaults.sounds.rawValue)
         UserDefaults(suiteName: "group.moonhealth.share")!.removeObject(forKey: Defaults.coords.rawValue)
     }
     
@@ -78,5 +82,17 @@ final class DefaultsTests: XCTestCase {
         XCTAssertNil(Defaults.currentTrait)
         Defaults.currentTrait = .period
         XCTAssertEqual(.period, Defaults.currentTrait)
+    }
+    
+    func testHaptics() {
+        XCTAssertTrue(Defaults.enableHaptics)
+        Defaults.enableHaptics = false
+        XCTAssertFalse(Defaults.enableHaptics)
+    }
+    
+    func testSounds() {
+        XCTAssertTrue(Defaults.enableSounds)
+        Defaults.enableSounds = false
+        XCTAssertFalse(Defaults.enableSounds)
     }
 }
