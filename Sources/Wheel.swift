@@ -38,7 +38,7 @@ public struct Wheel: Navigator {
     
     public func approach(from point: CGPoint) -> CGPoint {
         let new = radians(for: point)
-        if pointer(for: new).delta(sum: point) < 6 {
+        if pointer(for: new).delta(sum: point) < 3 {
             let delta = delta(for: new)
             
             if abs(delta) > 0.005 {

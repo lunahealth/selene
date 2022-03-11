@@ -130,9 +130,9 @@ final class NavigatorTests: XCTestCase {
                           size: .init(width: 1000, height: 1000),
                           padding: 0, maxWidth: 1000)
         var point = wheel.pointer(for: wheel.radians(for: .zero))
-        point.x += 6
-        XCTAssertEqual(.init(x: 311.9574019758561,
-                             y: 36.707455997476416),
+        point.x += 3
+        XCTAssertEqual(.init(x: 310.299638854177,
+                             y: 37.383773543183736),
                        wheel.approach(from: point))
     }
     
