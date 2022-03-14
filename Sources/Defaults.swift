@@ -9,8 +9,7 @@ public enum Defaults: String {
     coords,
     since,
     trait,
-    haptics,
-    sounds
+    haptics
 
     public static var action: Action {
         if let created = wasCreated {
@@ -45,11 +44,6 @@ public enum Defaults: String {
     public static var enableHaptics: Bool {
         get { self[.haptics] as? Bool ?? true }
         set { self[.haptics] = newValue }
-    }
-    
-    public static var enableSounds: Bool {
-        get { self[.sounds] as? Bool ?? true }
-        set { self[.sounds] = newValue }
     }
     
     public static var currentSince: Analysing {
