@@ -50,8 +50,8 @@ public struct Moon: Equatable {
         
         inclination = atan2(EarthToSunKm * sin(latitude), distanceKm - EarthToSunKm * cos(latitude))
         
-        phase = .init(inclination: inclination, angle: apparentAngle)
         fraction = .init(round((1 + cos(inclination)) / 2 * 100))
+        phase = .init(fraction: fraction, angle: apparentAngle)
         angle = apparentAngle - parallacticAngle
     }
     

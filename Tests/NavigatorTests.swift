@@ -5,22 +5,22 @@ final class NavigatorTests: XCTestCase {
     func testRadians() {
         var moon = Moon(inclination: .pi, apparentAngle: 1)
         
-        XCTAssertEqual(.new, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
+        XCTAssertEqual(.new, Moon.Phase(fraction: 0, angle: moon.apparentAngle))
         XCTAssertEqual(.pi2, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0, maxWidth: 0).radians)
         
         moon = .init(inclination: 0, apparentAngle: 0)
         
-        XCTAssertEqual(.full, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
+        XCTAssertEqual(.full, Moon.Phase(fraction: 100, angle: moon.apparentAngle))
         XCTAssertEqual(.pi, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0, maxWidth: 0).radians)
         
         moon = .init(inclination: .pi_2, apparentAngle: -1)
         
-        XCTAssertEqual(.firstQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
+        XCTAssertEqual(.firstQuarter, Moon.Phase(fraction: 50, angle: moon.apparentAngle))
         XCTAssertEqual(.pi_2, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0, maxWidth: 0).radians)
         
         moon = .init(inclination: .pi_2, apparentAngle: 1)
         
-        XCTAssertEqual(.lastQuarter, Moon.Phase(inclination: moon.inclination, angle: moon.apparentAngle))
+        XCTAssertEqual(.lastQuarter, Moon.Phase(fraction: 50, angle: moon.apparentAngle))
         XCTAssertEqual(.pi_2 + .pi, Wheel(date: .now, moon: moon, correction: 0, size: .zero, padding: 0, maxWidth: 0).radians)
     }
     
