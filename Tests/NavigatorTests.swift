@@ -139,16 +139,16 @@ final class NavigatorTests: XCTestCase {
     func testTrack() {
         let wheel = Tracker(size: .init(width: 1000, height: 1000))
         
-        XCTAssertEqual(.init(x: 65,
+        XCTAssertEqual(.init(x: 500,
                              y: 65),
-                       wheel.approach(from: .init(x: 65, y: 65)))
+                       wheel.approach(from: .init(x: 500, y: 65)))
         
-        XCTAssertEqual(.init(x: -281.75,
-                             y: -281.75),
-                       wheel.approach(from: .init(x: -300, y: -300)))
+        XCTAssertEqual(.init(x: 215,
+                             y: 193.25),
+                       wheel.approach(from: .init(x: 200, y: 200)))
         
-        XCTAssertEqual(.init(x: 288.25,
-                             y: 288.25),
-                       wheel.approach(from: .init(x: 300, y: 300)))
+        XCTAssertEqual(.init(x: 785,
+                             y: 763.25),
+                       wheel.approach(from: .init(x: 800, y: 800)))
     }
 }
