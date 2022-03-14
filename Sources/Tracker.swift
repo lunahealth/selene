@@ -2,9 +2,11 @@ import Foundation
 import CoreGraphics
 
 public struct Tracker: Navigator {
-    public let origin = CGPoint(x: 65, y: 65)
+    public let origin: CGPoint
     
-    public init() { }
+    public init(size: CGSize) {
+        origin = .init(x: size.width / 2, y: 0)
+    }
     
     public func approach(from point: CGPoint) -> CGPoint {
         aproximate(from: point)

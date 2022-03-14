@@ -137,7 +137,7 @@ final class NavigatorTests: XCTestCase {
     }
     
     func testTrack() {
-        let wheel = Tracker()
+        let wheel = Tracker(size: .init(width: 1000, height: 1000))
         
         XCTAssertEqual(.init(x: 65,
                              y: 65),
