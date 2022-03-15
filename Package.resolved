@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/archivable/dater.git",
         "state": {
           "branch": "main",
-          "revision": "40a4b19b0dd9bfa8d5cd402a0f2a7ab16a7b6c4e",
+          "revision": "86735924c265b3e889a4836318348c758e7fc03e",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/archivable/package.git",
         "state": {
           "branch": "main",
-          "revision": "d70e9e58e8b3bad3f9e793acda198ed44e25b656",
+          "revision": "15193042edd33e75875ce5aef64762e466fa7d3e",
           "version": null
         }
       }

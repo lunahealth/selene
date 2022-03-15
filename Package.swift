@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 import PackageDescription
 
 let package = Package(
@@ -14,13 +14,15 @@ let package = Package(
             targets: ["Selene"]),
     ],
     dependencies: [
-        .package(name: "Archivable", url: "https://github.com/archivable/package.git", .branch("main")),
-        .package(name: "Dater", url: "https://github.com/archivable/dater.git", .branch("main"))
+        .package(url: "https://github.com/archivable/package.git", branch: "main"),
+        .package(url: "https://github.com/archivable/dater.git", branch: "main")
     ],
     targets: [
         .target(
             name: "Selene",
-            dependencies: ["Archivable", "Dater"],
+            dependencies: [
+                .product(name: "Archivable", package: "package"),
+                .product(name: "Dater", package: "dater")],
             path: "Sources"),
         .testTarget(
             name: "Tests",
