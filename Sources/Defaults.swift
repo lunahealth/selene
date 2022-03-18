@@ -56,15 +56,13 @@ public enum Defaults: String {
         set { self[.trait] = newValue?.rawValue }
     }
     
-    public static var coordinates: Coords? {
+    public static var coordinates: Coords {
         get {
             share.data(forKey: Self.coords.rawValue)?.prototype()
+            ?? .init(latitude: 52.522399, longitude: 13.413027)
         }
         set {
-            newValue
-                .map {
-                    share.setValue($0.data, forKey: Self.coords.rawValue)
-                }
+            share.setValue(newValue.data, forKey: Self.coords.rawValue)
         }
     }
     

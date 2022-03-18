@@ -65,7 +65,6 @@ final class DefaultsTests: XCTestCase {
     }
     
     func testCoordinates() {
-        XCTAssertNil(Defaults.coordinates)
         Defaults.coordinates = .init(latitude: 1, longitude: 2)
         XCTAssertEqual(.init(latitude: 1, longitude: 2), Defaults.coordinates)
     }

@@ -58,13 +58,6 @@ final class CloudTests: XCTestCase {
         XCTAssertTrue(model.journal.isEmpty)
     }
     
-    func testLocation() async {
-        await cloud.coords(latitude: 3.4560, longitude: 1.2345)
-        let coords = await cloud.model.coords
-        XCTAssertEqual(3.4560, coords.latitude)
-        XCTAssertEqual(1.2345, coords.longitude)
-    }
-    
     func testDelete() async {
         await cloud.track(trait: .period, level: .medium)
         await cloud.track(trait: .exercise, level: .high)

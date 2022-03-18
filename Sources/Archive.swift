@@ -3,9 +3,12 @@ import Dater
 import Archivable
 
 public struct Archive: Arch {
+    public static var version: UInt8 {
+        1
+    }
+    
     public var timestamp: UInt32
     public internal(set) var settings: Settings
-    public internal(set) var coords: Coords
     private(set) var journal: Set<Journal>
 
     public var calendar: [Days<Journal>] {
@@ -21,7 +24,6 @@ public struct Archive: Arch {
     
     public var data: Data {
         .init()
-        .adding(coords)
         .adding(size: UInt16.self, collection: journal)
         .adding(settings)
     }
@@ -30,13 +32,16 @@ public struct Archive: Arch {
         timestamp = 0
         journal = []
         settings = .init()
-        coords = .init(latitude: 52.522399, longitude: 13.413027)
     }
     
     public init(version: UInt8, timestamp: UInt32, data: Data) async {
         self.timestamp = timestamp
         var data = data
-        coords = .init(data: &data)
+        
+        if version == 0 {
+            Defaults.coordinates = .init(data: &data)
+        }
+        
         journal = .init(data.collection(size: UInt16.self))
         settings = .init(data: &data)
     }

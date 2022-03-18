@@ -3,7 +3,7 @@ import XCTest
 @testable import Selene
 
 final class MigrationTests: XCTestCase {
-    private var archive: Archive_v1!
+    private var archive: Archive_v0!
     
     override func setUp() {
         archive = .init()
@@ -21,8 +21,6 @@ final class MigrationTests: XCTestCase {
                             .with(trait: .sleep, level: .low))
         archive.coords = .init(latitude: 5.4321, longitude: -1.2345)
         archive.settings = archive.settings.adding(trait: .period).adding(trait: .sleep)
-
-        XCTAssertNil(Defaults.coordinates)
         
         let migrated = await Archive.prototype(data: archive.compressed)
         XCTAssertEqual(1, migrated.journal.count)
@@ -36,7 +34,7 @@ final class MigrationTests: XCTestCase {
         XCTAssertFalse(migrated.settings.traits.contains(.exercise))
         
         let coords = Defaults.coordinates
-        XCTAssertEqual(5.4321, coords?.latitude)
-        XCTAssertEqual(-1.2345, coords?.longitude)
+        XCTAssertEqual(5.432, coords.latitude)
+        XCTAssertEqual(-1.234, coords.longitude)
     }
 }

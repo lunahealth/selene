@@ -2,7 +2,7 @@ import Foundation
 import Dater
 import Archivable
 
-struct Archive_v1: Arch {
+struct Archive_v0: Arch {
     var timestamp: UInt32
     var settings: Settings
     var coords: Coords
