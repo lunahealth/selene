@@ -16,7 +16,7 @@ extension Moon {
                 self = .new
             case 3 ... 47:
                 self = angle < 0 ? .waxingCrescent : .waningCrescent
-            case 48 ... 52:
+            case 47 ... 53:
                 self = angle < 0 ? .firstQuarter : .lastQuarter
             case 53 ... 97:
                 self = angle < 0 ? .waxingGibbous : .waningGibbous
