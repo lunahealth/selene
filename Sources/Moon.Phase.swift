@@ -14,11 +14,11 @@ extension Moon {
             switch fraction {
             case 0 ... 2:
                 self = .new
-            case 3 ... 46:
+            case 3 ... 45:
                 self = angle < 0 ? .waxingCrescent : .waningCrescent
-            case 47 ... 53:
+            case 46 ... 54:
                 self = angle < 0 ? .firstQuarter : .lastQuarter
-            case 54 ... 97:
+            case 55 ... 97:
                 self = angle < 0 ? .waxingGibbous : .waningGibbous
             default:
                 self = .full
