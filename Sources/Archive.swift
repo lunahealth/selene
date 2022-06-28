@@ -38,12 +38,13 @@ public struct Archive: Arch {
         self.timestamp = timestamp
         var data = data
         
-        if version == 0 {
-            Defaults.coordinates = .init(data: &data)
+        if version == Self.version {
+            journal = .init(data.collection(size: UInt16.self))
+            settings = .init(data: &data)
+        } else {
+            journal = []
+            settings = .init()
         }
-        
-        journal = .init(data.collection(size: UInt16.self))
-        settings = .init(data: &data)
     }
     
     public subscript(_ date: Date) -> Journal? {

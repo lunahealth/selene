@@ -9,6 +9,47 @@ final class ArchiveTests: XCTestCase {
         archive = .init()
     }
     
+    func testDifferentVersion() async {
+        archive.replace(item: .init(date: .init(timeIntervalSinceNow: -1000))
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)
+                            .with(trait: .exercise, level: .low)
+                            .with(trait: .focus, level: .low))
+        
+        archive.replace(item: .init(date: .init(timeIntervalSinceNow: -100000))
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)
+                            .with(trait: .exercise, level: .low)
+                            .with(trait: .focus, level: .low))
+        
+        archive.replace(item: .init(date: .init(timeIntervalSinceNow: -10000000))
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)
+                            .with(trait: .exercise, level: .low)
+                            .with(trait: .focus, level: .low))
+        
+        archive.replace(item: .init(date: .init(timeIntervalSinceNow: -20000000))
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)
+                            .with(trait: .exercise, level: .low)
+                            .with(trait: .focus, level: .low))
+        
+        archive.replace(item: .init(date: .init(timeIntervalSinceNow: -30000000))
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)
+                            .with(trait: .exercise, level: .low)
+                            .with(trait: .focus, level: .low))
+        
+        archive.replace(item: .init(date: .init(timeIntervalSinceNow: -40000000))
+                            .with(trait: .period, level: .high)
+                            .with(trait: .sleep, level: .low)
+                            .with(trait: .exercise, level: .low)
+                            .with(trait: .focus, level: .low))
+        
+        let parsed = await Archive(version: 0, timestamp: archive.timestamp, data: archive.data)
+        XCTAssertTrue(parsed.journal.isEmpty)
+    }
+    
     func testParse() async {
         archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         XCTAssertTrue(archive.journal.isEmpty)
