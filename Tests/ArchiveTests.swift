@@ -10,7 +10,7 @@ final class ArchiveTests: XCTestCase {
     }
     
     func testParse() async {
-        archive = await Archive.prototype(data: archive.compressed)
+        archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         XCTAssertTrue(archive.journal.isEmpty)
         
         let date = Date(timeIntervalSinceNow: -100000)
@@ -18,7 +18,7 @@ final class ArchiveTests: XCTestCase {
                             .with(trait: .period, level: .high)
                             .with(trait: .sleep, level: .low))
 
-        archive = await Archive.prototype(data: archive.compressed)
+        archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         XCTAssertEqual(1, archive.journal.count)
         XCTAssertEqual(2, archive.journal.first?.traits.count)
         XCTAssertEqual(.high, archive.journal.first?.traits.first { $0.key == .period }?.value)
@@ -28,11 +28,11 @@ final class ArchiveTests: XCTestCase {
         
         archive.replace(item: .init(date: date))
         archive.replace(item: .init(date: .now))
-        archive = await Archive.prototype(data: archive.compressed)
+        archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         XCTAssertEqual(2, archive.journal.count)
         
         archive.settings = archive.settings.adding(trait: .period).adding(trait: .sleep)
-        archive = await Archive.prototype(data: archive.compressed)
+        archive = await Archive(version: Archive.version, timestamp: archive.timestamp, data: archive.data)
         XCTAssertTrue(archive.settings.traits.contains(.period))
         XCTAssertTrue(archive.settings.traits.contains(.sleep))
         XCTAssertFalse(archive.settings.traits.contains(.exercise))
